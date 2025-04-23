@@ -17,7 +17,7 @@ A cutting-edge personal portfolio website that blends sci-fi aesthetics with mod
 - GSAP for animations
 - FontAwesome icons
 - Responsive design with dark theme
-- Interactive UI components
+- Interactive UI components 
 
 ## Sections
 
@@ -26,7 +26,7 @@ A cutting-edge personal portfolio website that blends sci-fi aesthetics with mod
 - Education
 - Projects
 - Achievements
-- Contact
+- Contacts
 
 ## Connect With Me
 
