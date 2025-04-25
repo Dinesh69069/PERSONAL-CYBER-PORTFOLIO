@@ -8,12 +8,12 @@ const certifications = [
   {
     id: 1,
     title: "HTML Fundamentals",
-    organization: "HackerRank",
+    organization: "Luminus Learning",
     year: "2024",
     icon: "html5",
     description: "Certification in HTML fundamentals including semantic markup, forms, and accessibility. This certification validates my ability to create well-structured, accessible web pages using modern HTML5 standards.",
     skills: ["Semantic HTML", "Forms & Validation", "Accessibility", "Document Structure"],
-    image: "./assets/images/certificates/HTML Certficate.pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/HTML Certficate.pdf"
   },
   {
     id: 2,
@@ -23,17 +23,18 @@ const certifications = [
     icon: "python",
     description: "Verified skills in Python programming fundamentals, including data structures and functions. This certification confirms my proficiency in writing efficient Python code and solving problems using Python's powerful libraries.",
     skills: ["Data Structures", "Functions", "Error Handling", "File I/O"],
-    image: "./assets/images/certificates/Python Cerificate(Basic).pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/Python Cerificate(Basic).pdf"
   },
   {
     id: 3,
     title: "SQL Database",
-    organization: "HackerRank",
+    organization: "Simplilearn",
     year: "2024",
     icon: "database",
+    iconType: "solid",
     description: "Certification in SQL queries, data manipulation, and database management. This credential demonstrates my ability to design, query, and manage relational databases effectively.",
     skills: ["CRUD Operations", "Joins & Subqueries", "Indexing", "Database Design"],
-    image: "./assets/images/certificates/SQL Certificate.pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/SQL Certificate.pdf"
   },
   {
     id: 4,
@@ -43,27 +44,28 @@ const certifications = [
     icon: "css3-alt",
     description: "Certified skills in CSS styling, selectors, and responsive design principles. This certification validates my ability to create visually appealing, responsive layouts using modern CSS techniques.",
     skills: ["Flexbox & Grid", "Media Queries", "Animations", "CSS Variables"],
-    image: "./assets/images/certificates/CSS Certificate(Basic).pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/CSS Certificate(Basic).pdf"
   },
   {
     id: 5,
     title: "C Programming (Basic)",
-    organization: "HackerRank",
+    organization: "Simplilearn",
     year: "2024",
-    icon: "c",
+    icon: "terminal",
+    iconType: "solid",
     description: "Verification of foundational C programming skills including memory management and structures. This certification confirms my understanding of low-level programming concepts and efficient memory usage.",
     skills: ["Memory Management", "Pointers", "Structures", "File Operations"],
-    image: "./assets/images/certificates/C_Certificate(Basic).pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/C_Certificate(Basic).pdf"
   },
   {
     id: 6,
     title: "Business Intelligence",
-    organization: "HackerRank",
+    organization: "Microsoft",
     year: "2024",
-    icon: "chart-line",
+    icon: "microsoft",
     description: "Certification in business intelligence concepts, data visualization, and analytics. This credential demonstrates my ability to transform raw data into actionable insights through effective visualization and analysis techniques.",
     skills: ["Data Visualization", "KPI Tracking", "Dashboard Design", "Data Modeling"],
-    image: "./assets/images/certificates/BI Certificate.pdf"
+    image: "/PERSONAL-CYBER-PORTFOLIO/assets/images/certificates/BI Certificate.pdf"
   }
 ];
 
@@ -124,7 +126,7 @@ const Achievements: React.FC = () => {
               {certifications.map((cert) => (
                 <div key={cert.id} className="glassmorphism rounded-md overflow-hidden group hover:shadow-neon transition-all duration-300">
                   <div className="relative h-48 overflow-hidden bg-[#2D2D2D] flex items-center justify-center">
-                    <i className={`fab fa-${cert.icon} text-7xl text-accent opacity-30`}></i>
+                    <i className={`fa${cert.iconType ? 's' : 'b'} fa-${cert.icon} text-7xl text-accent opacity-30`}></i>
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] to-transparent opacity-60"></div>
                     <div className="absolute top-4 right-4 bg-[#2D2D2D] px-2 py-1 rounded-sm text-xs font-mono text-[#FF3366]">
                       {cert.year}
@@ -239,26 +241,39 @@ const Achievements: React.FC = () => {
               </div>
               
               <div className="md:col-span-7">
-                <div className="rounded-lg overflow-hidden bg-white h-full flex items-center justify-center">
-                  <iframe 
-                    src={selectedCert.image} 
-                    className="w-full h-[400px]" 
-                    title={`${selectedCert.title} Certificate`}
-                  ></iframe>
+                <div className="rounded-lg overflow-hidden bg-[#2D2D2D] h-full flex flex-col items-center justify-center p-4">
+                  {/* Certificate Preview Container */}
+                  <div className="w-full h-[400px] flex flex-col items-center justify-center">
+                    <div className="bg-[#1A1A1A] p-8 rounded-lg text-center w-full">
+                      <i className={`fa${selectedCert.iconType ? 's' : 'b'} fa-${selectedCert.icon} text-8xl text-accent mb-4`}></i>
+                      <h3 className="text-xl font-bold text-white mb-2">{selectedCert.title}</h3>
+                      <p className="text-gray-400 mb-4">Issued by {selectedCert.organization}</p>
+                      
+                      {/* View Options */}
+                      <div className="flex flex-col gap-3 mt-6">
+                        <a 
+                          href={selectedCert.image}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="neo-button bg-accent text-white px-6 py-3 rounded-sm flex items-center justify-center hover:bg-opacity-90 transition-all"
+                        >
+                          <i className="fas fa-external-link-alt mr-2"></i>
+                          <span>View Full Certificate</span>
+                        </a>
+                        
+                        <a 
+                          href={selectedCert.image}
+                          download
+                          className="neo-button border border-accent text-accent px-6 py-3 rounded-sm flex items-center justify-center hover:bg-accent hover:bg-opacity-10 transition-all"
+                        >
+                          <i className="fas fa-download mr-2"></i>
+                          <span>Download Certificate</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            
-            <div className="border-t border-gray-800 p-4 flex justify-end">
-              <a 
-                href={selectedCert.image} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="neo-button bg-accent text-white px-4 py-2 rounded-sm flex items-center hover:bg-opacity-90 transition-all"
-              >
-                <i className="fas fa-download mr-2"></i>
-                <span>Download Certificate</span>
-              </a>
             </div>
           </div>
         </div>

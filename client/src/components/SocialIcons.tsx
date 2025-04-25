@@ -21,33 +21,7 @@ export const WhatsappIcon: React.FC<IconProps> = ({ className = "w-5 h-5" }) => 
 
 export const HackerRankIcon: React.FC<IconProps> = ({ className = "w-5 h-5" }) => {
   return (
-    <svg 
-      className={className} 
-      viewBox="0 0 126 125" 
-      fill="currentColor" 
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path 
-        d="M125.9 62.4L125.9 62.4c-.1-13.8-4-27.2-11.4-38.6-7.3-11.2-17.4-20.5-29.5-26.9-1.6-.9-3.3-1.6-5-2.4L68.3 0 56.6 0l-11.7 0c-1.7.7-3.3 1.5-5 2.4-12 6.5-22.2 15.7-29.5 26.9C3 35.2-1 48.6 0.1 62.4c1 13.8 6.2 26.8 14.6 37.5 8.5 10.7 19.7 18.9 32.4 23.5 1.6.6 3.3 1.1 4.9 1.6l16.3 0 11.7 0c1.7-.5 3.3-1 4.9-1.6 12.7-4.6 23.9-12.7 32.4-23.5C125.7 89.2 130.8 76.2 125.9 62.4zM79.5 104.5H46.5V20.5h33V104.5z"
-        fillRule="evenodd"
-        clipRule="evenodd"
-      />
-      <path 
-        d="M63 68.8V75.5H57.5V68.8H63z" 
-        fillRule="evenodd" 
-        clipRule="evenodd"
-      />
-      <path 
-        d="M68.5 56.3V63H52.5V56.3H68.5z" 
-        fillRule="evenodd" 
-        clipRule="evenodd"
-      />
-      <path 
-        d="M63 43.8V50.5H57.5V43.8H63z" 
-        fillRule="evenodd" 
-        clipRule="evenodd"
-      />
-    </svg>
+    <i className={`fab fa-hackerrank ${className}`}></i>
   );
 };
 

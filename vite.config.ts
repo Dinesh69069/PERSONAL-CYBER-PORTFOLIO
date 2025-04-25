@@ -7,7 +7,7 @@ const isProd = process.env.NODE_ENV === "production";
 export default defineConfig({
   
 
-  base: isProd ? "/PERSONAL_CYBER_PORTFOLIO/" : "/",
+base:  "/PERSONAL-CYBER-PORTFOLIO/" ,
 
   plugins: [
     react(),

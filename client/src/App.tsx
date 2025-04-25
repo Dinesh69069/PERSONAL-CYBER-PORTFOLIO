@@ -12,7 +12,7 @@ import LoadingScreen from "./components/LoadingScreen";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Portfolio} />
+      <Route path="/PERSONAL-CYBER-PORTFOLIO/" component={Portfolio} />
       <Route component={NotFound} />
     </Switch>
   );
