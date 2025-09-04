@@ -113,7 +113,7 @@ const Home: React.FC = () => {
                   {/* Cyberpunk profile photo with responsive images and WebP support */}
                   <picture>
                     <source 
-                      srcSet={import.meta.env.BASE_URL + "cyber-profile-rect.webp"} 
+                      srcSet={import.meta.env.BASE_URL + "converted_image.webp"} 
                       type="image/webp"
                     />
                     <img 

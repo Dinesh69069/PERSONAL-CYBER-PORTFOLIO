@@ -74,13 +74,13 @@ export default function Chatbot() {
         >
           {/* Outer Glow Ring */}
           <motion.div
-            className="absolute inset-0 rounded-full"
+            className="absolute inset-0 rounded-full border-2 border-accent/60"
             animate={{ 
               rotate: 360,
               boxShadow: [
-                "0 0 20px rgba(0, 255, 178, 0.4)",
-                "0 0 35px rgba(0, 255, 178, 0.8)",
-                "0 0 20px rgba(0, 255, 178, 0.4)"
+                "0 0 25px rgba(0, 255, 178, 1), 0 0 35px rgba(0, 255, 178, 0.6), inset 0 0 15px rgba(0, 255, 178, 0.3)",
+                "0 0 40px rgba(0, 255, 178, 1.5), 0 0 50px rgba(0, 255, 178, 0.8), inset 0 0 20px rgba(0, 255, 178, 0.4)",
+                "0 0 25px rgba(0, 255, 178, 1), 0 0 35px rgba(0, 255, 178, 0.6), inset 0 0 15px rgba(0, 255, 178, 0.3)"
               ]
             }}
             transition={{ 
@@ -109,10 +109,10 @@ export default function Chatbot() {
           
           {/* Interactive Pulse Effect */}
           <motion.div
-            className="absolute inset-0 rounded-full border-2 border-accent/30"
+            className="absolute inset-0 rounded-full border-2 border-accent/50"
             animate={{ 
               scale: [1, 1.2, 1],
-              opacity: [0.5, 0, 0.5]
+              opacity: [0.8, 0.2, 0.8]
             }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           />

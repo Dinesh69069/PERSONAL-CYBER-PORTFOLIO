@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import ElectricBorder from "../components/ui/ElectricBorder/ElectricBorder";
 
 // Real certificates from the provided files
+const basePath = import.meta.env.BASE_URL;
 const certifications = [
   {
     id: 1,
@@ -13,7 +14,7 @@ const certifications = [
     icon: "aws",
     description: "Foundational certification covering AWS Cloud concepts, services, and basic architectural principles. This certification validates my understanding of AWS Cloud fundamentals and core services.",
     skills: ["Cloud Computing", "AWS Services", "Cloud Architecture", "Security & Compliance"],
-    image: "/CERTIFICATES/AWS Cloud Practitioner Essentials.pdf"
+    image: `${basePath}CERTIFICATES/AWS Cloud Practitioner Essentials.pdf`
   },
   {
     id: 2,
@@ -23,7 +24,7 @@ const certifications = [
     icon: "microsoft",
     description: "Advanced certification in business intelligence concepts, data visualization, and analytics. This comprehensive credential demonstrates my ability to transform raw data into actionable insights through effective visualization and analysis techniques. Covers advanced dashboard design, KPI tracking, and strategic data modeling for business decision-making.",
     skills: ["Data Visualization", "Dashboard Design", "KPI Tracking", "Data Modeling"],
-    image: "/CERTIFICATES/BI Certificate - Microsoft.pdf"
+    image: `${basePath}CERTIFICATES/BI Certificate - Microsoft.pdf`
   },
   {
     id: 3,
@@ -34,7 +35,7 @@ const certifications = [
     iconType: "solid",
     description: "Comprehensive certification in data analytics fundamentals, including advanced data visualization and statistical analysis techniques. This extensive credential demonstrates my ability to analyze and interpret complex data effectively, utilizing statistical methods and business intelligence tools to drive data-driven decision making in professional environments.",
     skills: ["Data Visualization", "Statistical Methods","Data Analysis", "Business Intelligence"],
-    image: "/CERTIFICATES/Introduction to Data Analytics (Linked-In Learning).pdf"
+    image: `${basePath}CERTIFICATES/Introduction to Data Analytics (Linked-In Learning).pdf`
   },
   {
     id: 4,
@@ -45,7 +46,7 @@ const certifications = [
     iconType: "solid",
     description: "Certification in cybersecurity fundamentals and best practices. This credential demonstrates my understanding of cybersecurity principles and security measures.",
     skills: ["Cybersecurity", "Security Best Practices", "Risk Assessment", "Security Protocols"],
-    image: "/CERTIFICATES/Cyber - Deloitte.pdf"
+    image: `${basePath}CERTIFICATES/Cyber - Deloitte.pdf`
   },
   {
     id: 5,
@@ -56,18 +57,7 @@ const certifications = [
     iconType: "solid",
     description: "Advanced certification in technology consulting methodologies and digital transformation strategies. This comprehensive credential demonstrates my expertise in technology implementation, client advisory services, and enterprise solution architecture across diverse business environments.",
     skills: ["Technology Strategy", "Digital Transformation", "Client Advisory", "Solution Architecture"],
-    image: "/CERTIFICATES/Tecnology - Deloitte.pdf"
-  },
-  {
-    id: 5,
-    title: "Technology Consulting",
-    organization: "Deloitte",
-    year: "2024",
-    icon: "building",
-    iconType: "solid",
-    description: "Certification in technology consulting principles and methodologies. This credential demonstrates my understanding of technology consulting practices and business technology solutions.",
-    skills: ["Technology Consulting", "Business Analysis", "Solution Design", "Client Management"],
-    image: "/CERTIFICATES/Tecnology - Deloitte.pdf"
+    image: `${basePath}CERTIFICATES/Tecnology - Deloitte.pdf`
   },
   {
     id: 6,
@@ -77,8 +67,8 @@ const certifications = [
     icon: "database",
     iconType: "solid",
     description: "Certification in SQL queries, data manipulation, and database management. This credential demonstrates my ability to design, query, and manage relational databases effectively.",
-    skills: ["CRUD Operations", "Joins & Subqueries", "Indexing", "Database Design"],
-    image: "/CERTIFICATES/SQL - SimpliLearn.pdf"
+    skills: ["SQL Queries", "Database Design", "Data Manipulation", "Performance Tuning"],
+    image: `${basePath}CERTIFICATES/SQL - SimpliLearn.pdf`
   },
   {
     id: 7,
@@ -88,7 +78,7 @@ const certifications = [
     icon: "python",
     description: "Verified skills in Python programming fundamentals, including data structures and functions. This certification confirms my proficiency in writing efficient Python code and solving problems using Python's powerful libraries.",
     skills: ["Data Structures", "Functions", "Error Handling", "File I/O"],
-    image: "/CERTIFICATES/Python (Basic) - Hacker Rank.pdf"
+    image: `${basePath}CERTIFICATES/Python (Basic) - Hacker Rank.pdf`
   },
   {
     id: 8,
@@ -98,7 +88,7 @@ const certifications = [
     icon: "js",
     description: "Certification in JavaScript fundamentals including variables, functions, and DOM manipulation. This certification validates my ability to create interactive web applications using modern JavaScript.",
     skills: ["Variables & Data Types", "Functions", "DOM Manipulation", "Event Handling"],
-    image: "/CERTIFICATES/JavaScript (Basic) - Sololearn.pdf"
+    image: `${basePath}CERTIFICATES/JavaScript (Basic) - Sololearn.pdf`
   },
   {
     id: 9,
@@ -108,7 +98,7 @@ const certifications = [
     icon: "html5",
     description: "Comprehensive HTML certification covering modern web development standards. This certification validates my expertise in creating well-structured web content.",
     skills: ["HTML5", "Semantic Markup", "Forms", "Web Standards"],
-    image: "/CERTIFICATES/HTML - (SoloLearn).pdf"
+    image: `${basePath}CERTIFICATES/HTML - (SoloLearn).pdf`
   },
   {
     id: 10,
@@ -118,7 +108,7 @@ const certifications = [
     icon: "html5",
     description: "Certification in HTML fundamentals including semantic markup, forms, and accessibility. This certification validates my ability to create well-structured, accessible web pages using modern HTML5 standards.",
     skills: ["Semantic HTML", "Forms & Validation", "Accessibility", "Document Structure"],
-    image: "/CERTIFICATES/HTML - Lomus Learning.pdf"
+    image: `${basePath}CERTIFICATES/HTML - Lomus Learning.pdf`
   },
   {
     id: 11,
@@ -128,7 +118,7 @@ const certifications = [
     icon: "css3-alt",
     description: "Comprehensive certification demonstrating verified skills in CSS styling, advanced selectors, and responsive design principles. This extensive credential validates my ability to create visually appealing, responsive layouts using modern CSS techniques including Flexbox, Grid, animations, and CSS variables for professional web development projects.",
     skills: ["Advanced Flexbox & Grid", "CSS Variables", "Media Queries", "Animations"],
-    image: "/CERTIFICATES/CSS (Basic) - Hacker Rank.pdf"
+    image: `${basePath}CERTIFICATES/CSS (Basic) - Hacker Rank.pdf`
   },
   {
     id: 12,
@@ -139,7 +129,7 @@ const certifications = [
     iconType: "solid",
     description: "Advanced C programming certification covering intermediate concepts and advanced programming techniques. This certification demonstrates my proficiency in complex C programming concepts.",
     skills: ["Advanced Pointers", "Memory Management", "Data Structures", "File I/O"],
-    image: "/CERTIFICATES/C Intermediate - Sololearn.pdf"
+    image: `${basePath}CERTIFICATES/C Intermediate - Sololearn.pdf`
   },
   {
     id: 13,
@@ -150,7 +140,7 @@ const certifications = [
     iconType: "solid",
     description: "Verification of foundational C programming skills including memory management and structures. This certification confirms my understanding of low-level programming concepts and efficient memory usage.",
     skills: ["Memory Management", "Pointers", "Structures", "File Operations"],
-    image: "/CERTIFICATES/C (Basic) - SimpliLearn.pdf"
+    image: `${basePath}CERTIFICATES/C (Basic) - SimpliLearn.pdf`
   },
   {
     id: 14,
@@ -161,7 +151,7 @@ const certifications = [
     iconType: "solid",
     description: "Basic SQL certification covering fundamental database querying and manipulation skills. This certification validates my ability to work with relational databases.",
     skills: ["SQL Queries", "Data Retrieval", "Table Operations", "Basic Joins"],
-    image: "/CERTIFICATES/SQL (Basic) - Hacker Rank.pdf"
+    image: `${basePath}CERTIFICATES/SQL (Basic) - Hacker Rank.pdf`
   }
 ];
 
