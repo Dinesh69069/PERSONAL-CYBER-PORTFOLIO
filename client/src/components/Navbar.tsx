@@ -29,7 +29,13 @@ const Navbar = () => {
     <nav className={`glassmorphism fixed w-full z-50 py-3 px-6 md:px-12 transition-all duration-300 ${scrolled ? 'bg-opacity-90' : ''}`}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <a href="#home" className="text-2xl font-bold flex items-center space-x-2">
-          <span className="text-accent animate-pulse">∆</span>
+          <img 
+            src={import.meta.env.BASE_URL + "transformers-logo-new.png"} 
+            alt="Dinesh Logo" 
+            className="w-9 h-9 object-cover rounded-full"
+            width={36}
+            height={36}
+          />
           <span className="tracking-wider">DINESH</span>
         </a>
         

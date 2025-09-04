@@ -1,14 +1,22 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { gsap } from 'gsap';
+import React, { useEffect, useState, useRef, Dispatch, SetStateAction } from 'react';
 
-const LoadingScreen: React.FC = () => {
+interface LoadingScreenProps {
+  setIsLoading?: Dispatch<SetStateAction<boolean>>;
+}
+
+const LoadingScreen: React.FC<LoadingScreenProps> = ({ setIsLoading }) => {
   const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("INITIALIZING SYSTEMS");
   const [progress, setProgress] = useState(0);
   const [bootLines, setBootLines] = useState<string[]>([]);
+  const [hasAnimated, setHasAnimated] = useState(false); // Prevent multiple animations
   const terminalRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
+    // Prevent multiple animations
+    if (hasAnimated) return;
+    setHasAnimated(true);
+    
     // Text sequence for cyberpunk boot sequence
     const textSequence = [
       "INITIALIZING SYSTEMS",
@@ -41,112 +49,141 @@ const LoadingScreen: React.FC = () => {
     ];
     
     // Create cyberpunk-style loading sequence with GSAP
-    const mainTl = gsap.timeline();
+    let mainTl: any;
     
     // Initial glitch/boot effect
-    mainTl.to('.loading-screen', {
-      opacity: 0.5,
-      duration: 0.05,
-      repeat: 8,
-      yoyo: true
-    });
-    
-    // Add boot log lines
-    const addBootLine = (index: number) => {
-      if (index < bootLogSequence.length) {
-        setBootLines(prev => [...prev, bootLogSequence[index]]);
-        // Auto-scroll terminal
-        if (terminalRef.current) {
-          terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-        }
-      }
-    };
-    
-    // Add initial boot lines faster
-    for (let i = 0; i < 3; i++) {
-      mainTl.call(() => addBootLine(i), [], i * 0.2);
-    }
-    
-    // Animate the robotic parts with cooler entrances
-    mainTl.fromTo('.robot-head', 
-      { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.8, ease: "elastic.out(1.2, 0.5)" }
-    );
-    
-    mainTl.fromTo('.robot-part', 
-      { y: 20, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.08, duration: 0.6, ease: "power2.out" },
-      "-=0.5"
-    );
-    
-    // Continue adding boot lines
-    for (let i = 3; i < bootLogSequence.length; i++) {
-      mainTl.call(() => addBootLine(i), [], 1.5 + (i - 3) * 0.15);
-    }
-    
-    // Animate the progress bar and text changes
-    textSequence.forEach((text, index) => {
-      // Update text and progress in sequence
-      mainTl.call(() => {
-        setLoadingText(text);
-        setProgress(Math.floor((index + 1) / textSequence.length * 100));
-      }, [], 1 + index * 0.9);
+    import('gsap').then(({ gsap }) => {
+      mainTl = gsap.timeline();
+      mainTl.to('.loading-screen', {
+        opacity: 0.5,
+        duration: 0.05,
+        repeat: 8,
+        yoyo: true
+      });
       
-      // Add scanning line effect
-      if (index < textSequence.length - 1) {
-        mainTl.fromTo('.scan-line',
-          { top: '0%', opacity: 0.7 },
-          { top: '100%', opacity: 0, duration: 0.8, ease: "power1.inOut" },
-          1 + index * 0.9 + 0.1
-        );
+      // Add boot log lines
+      const addBootLine = (index: number) => {
+        if (index < bootLogSequence.length) {
+          setBootLines(prev => [...prev, bootLogSequence[index]]);
+          // Auto-scroll terminal
+          if (terminalRef.current) {
+            terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+          }
+        }
+      };
+      
+      // Add initial boot lines faster
+      for (let i = 0; i < 3; i++) {
+        mainTl.call(() => addBootLine(i), [], i * 0.2);
+      }
+      
+      // Animate the robotic parts with cooler entrances
+      mainTl.fromTo('.robot-head', 
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.8, ease: "elastic.out(1.2, 0.5)" }
+      );
+      
+      mainTl.fromTo('.robot-part', 
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.08, duration: 0.6, ease: "power2.out" },
+        "-=0.5"
+      );
+      
+      // Continue adding boot lines
+      for (let i = 3; i < bootLogSequence.length; i++) {
+        mainTl.call(() => addBootLine(i), [], 1.5 + (i - 3) * 0.15);
+      }
+      
+      // Animate the progress bar and text changes with slower progression
+      textSequence.forEach((text, index) => {
+        // Update text and progress in sequence with longer delays
+        mainTl.call(() => {
+          setLoadingText(text);
+          // Gradual progress that reaches 100% on the last step
+          const progressValue = index === textSequence.length - 1 ? 100 : Math.floor((index + 1) / textSequence.length * 85);
+          setProgress(progressValue);
+        }, [], 2 + index * 1.5); // Increased timing for slower progression
+        
+        // Add scanning line effect
+        if (index < textSequence.length - 1) {
+          mainTl.fromTo('.scan-line',
+            { top: '0%', opacity: 0.7 },
+            { top: '100%', opacity: 0, duration: 1.2, ease: "power1.inOut" },
+            2 + index * 1.5 + 0.2
+          );
+        }
+      });
+      
+      // Final progress animation to 100%
+      mainTl.call(() => {
+        setLoadingText("SYSTEMS FULLY OPERATIONAL");
+        setProgress(100);
+      }, [], 2 + (textSequence.length - 1) * 1.5 + 1);
+      
+      // Hold at 100% for a moment before transitioning
+      mainTl.call(() => {
+        setLoadingText("LAUNCHING PORTFOLIO...");
+      }, [], 2 + (textSequence.length - 1) * 1.5 + 2.5);
+      
+      // Eye scanning effects - adjusted timing
+      mainTl.to('.robot-eye-inner', {
+        boxShadow: '0 0 25px 8px #00FFB2',
+        background: 'rgba(0, 255, 178, 0.9)',
+        repeat: 4,
+        yoyo: true,
+        duration: 0.4
+      }, 4);
+      
+      // Mouth analyzer animation - adjusted timing
+      mainTl.to('.mouth-bar', {
+        height: (i: number) => (Math.random() * 12) + 2 + 'px',
+        stagger: { each: 0.05, repeat: 12, yoyo: true },
+        duration: 0.2,
+      }, 4);
+      
+      // Final HUD elements - adjusted timing
+      mainTl.fromTo('.hud-element',
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, stagger: 0.15, duration: 0.6 },
+        6
+      );
+      
+      // Final reveal animation with proper timing
+      const finalTransitionTime = 2 + (textSequence.length - 1) * 1.5 + 4; // After all content is loaded
+      mainTl.to('.loading-screen', {
+        opacity: 0,
+        duration: 1.0,
+        delay: 1.5,
+        onComplete: () => {
+          // Ensure this only runs once
+          if (loading) {
+            setLoading(false);
+            if (setIsLoading) {
+              setIsLoading(false);
+            }
+          }
+        }
+      }, finalTransitionTime);
+    }).catch((error) => {
+      console.error('Animation failed:', error);
+      // Fallback: hide loading screen immediately
+      setLoading(false);
+      if (setIsLoading) {
+        setIsLoading(false);
       }
     });
-    
-    // Eye scanning effects
-    mainTl.to('.robot-eye-inner', {
-      boxShadow: '0 0 25px 8px #00FFB2',
-      background: 'rgba(0, 255, 178, 0.9)',
-      repeat: 3,
-      yoyo: true,
-      duration: 0.3
-    }, 3);
-    
-    // Mouth analyzer animation
-    mainTl.to('.mouth-bar', {
-      height: (i) => (Math.random() * 12) + 2 + 'px',
-      stagger: { each: 0.05, repeat: 8, yoyo: true },
-      duration: 0.2,
-    }, 3);
-    
-    // Final HUD elements
-    mainTl.fromTo('.hud-element',
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, stagger: 0.1, duration: 0.4 },
-      4
-    );
-    
-    // Final reveal animation
-    mainTl.to('.loading-screen', {
-      opacity: 0,
-      duration: 0.8,
-      delay: 1.2,
-      onComplete: () => {
-        setLoading(false);
-      }
-    }, "+=1.5");
     
     return () => {
-      mainTl.kill();
+      if (mainTl) {
+        mainTl.kill();
+      }
     };
-  }, []);
+  }, []); // Empty dependency array to run only once
   
   if (!loading) return null;
   
   return (
     <div className="loading-screen fixed inset-0 bg-[#0F0F12] z-[9999] flex flex-col items-center justify-center overflow-hidden">
-      {/* Scan line effect */}
-      <div className="scan-line absolute left-0 w-full h-2 bg-accent opacity-50"></div>
-      
       {/* Matrix-like grid background */}
       <div className="absolute inset-0 grid-overlay opacity-20"></div>
       
@@ -191,101 +228,59 @@ const LoadingScreen: React.FC = () => {
         </div>
       </div>
       
-      <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl gap-8 px-4 z-10">
-        {/* Transformer robot face - enhanced version */}
-        <div className="robot-head relative w-64 h-64 md:w-80 md:h-80">
-          {/* Robot head outline with neon glow */}
-          <div className="robot-part absolute inset-0 border-2 border-accent rounded-lg transform rotate-3 shadow-[0_0_15px_rgba(0,255,178,0.3)]"></div>
-          <div className="robot-part absolute inset-0 border-2 border-[#FF3366] rounded-lg transform -rotate-3 scale-95 shadow-[0_0_15px_rgba(255,51,102,0.3)]"></div>
-          
-          {/* Circuit patterns on the face */}
-          <div className="robot-part absolute inset-10 opacity-30">
-            <div className="absolute top-0 left-0 w-16 h-px bg-accent"></div>
-            <div className="absolute top-0 left-0 w-px h-16 bg-accent"></div>
-            <div className="absolute top-0 right-0 w-16 h-px bg-[#FF3366]"></div>
-            <div className="absolute top-0 right-0 w-px h-16 bg-[#FF3366]"></div>
-            <div className="absolute bottom-0 left-0 w-16 h-px bg-[#FF3366]"></div>
-            <div className="absolute bottom-0 left-0 w-px h-16 bg-[#FF3366]"></div>
-            <div className="absolute bottom-0 right-0 w-16 h-px bg-accent"></div>
-            <div className="absolute bottom-0 right-0 w-px h-16 bg-accent"></div>
-          </div>
-          
-          {/* Robot eyes - more advanced with inner mechanism */}
-          <div className="flex justify-between px-10 pt-12">
-            <div className="robot-part robot-eye w-16 h-12 bg-[#0D0D0D] border-2 border-accent rounded-sm flex items-center justify-center overflow-hidden shadow-[0_0_10px_rgba(0,255,178,0.5)]">
-              <div className="relative w-full h-full flex items-center justify-center">
-                <div className="absolute inset-0 scanline-effect opacity-40"></div>
-                <div className="robot-eye-inner w-10 h-6 bg-accent opacity-70 rounded-sm flex items-center justify-center relative">
-                  {/* Inner eye mechanism */}
-                  <div className="absolute inset-1 bg-[#0D0D0D] rounded-sm flex items-center justify-center">
-                    <div className="w-3 h-3 bg-white rounded-full"></div>
-                  </div>
-                  <div className="absolute w-full h-px bg-white opacity-50 animate-[scan_1.5s_infinite]"></div>
-                </div>
+      <div className="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-12 md:gap-16 lg:gap-20 px-4 z-10">
+        {/* Transformers Logo - replacing robot head */}
+        <div className="logo-container relative w-96 h-96 sm:w-[26rem] sm:h-[26rem] md:w-[30rem] md:h-[30rem] lg:w-[34rem] lg:h-[34rem] flex items-center justify-center">
+          <div className="relative">
+            {/* Glowing background effect */}
+            <div className="absolute inset-0 bg-accent/10 rounded-lg blur-xl animate-pulse"></div>
+            <div className="absolute inset-0 bg-[#FF3366]/10 rounded-lg blur-lg animate-pulse" style={{animationDelay: '0.5s'}}></div>
+            
+            {/* Logo container with glassmorphism effect */}
+            <div className="relative glassmorphism p-10 md:p-14 lg:p-16 rounded-2xl border border-accent/30 shadow-[0_0_30px_rgba(0,255,178,0.3)]">
+              <img 
+                src={import.meta.env.BASE_URL + "transformers-logo-new.png"} 
+                alt="Transformers Logo" 
+                className="w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 lg:w-72 lg:h-72 object-contain drop-shadow-[0_0_20px_rgba(0,255,178,0.5)] animate-float rounded-[10px]"
+                style={{
+                  filter: 'drop-shadow(0 0 10px rgba(0,255,178,0.8)) drop-shadow(0 0 20px rgba(0,255,178,0.4))'
+                }}
+              />
+              
+              {/* Scanning lines effect */}
+              <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                <div className="scan-line absolute left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
+                <div className="absolute top-0 left-0 w-full h-full border border-accent/20 rounded-2xl animate-pulse"></div>
               </div>
+              
+              {/* Corner decorations */}
+              <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-accent"></div>
+              <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-accent"></div>
+              <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-[#FF3366]"></div>
+              <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-[#FF3366]"></div>
             </div>
-            <div className="robot-part robot-eye w-16 h-12 bg-[#0D0D0D] border-2 border-accent rounded-sm flex items-center justify-center overflow-hidden shadow-[0_0_10px_rgba(0,255,178,0.5)]">
-              <div className="relative w-full h-full flex items-center justify-center">
-                <div className="absolute inset-0 scanline-effect opacity-40"></div>
-                <div className="robot-eye-inner w-10 h-6 bg-accent opacity-70 rounded-sm flex items-center justify-center relative">
-                  <div className="absolute inset-1 bg-[#0D0D0D] rounded-sm flex items-center justify-center">
-                    <div className="w-3 h-3 bg-white rounded-full"></div>
-                  </div>
-                  <div className="absolute w-full h-px bg-white opacity-50 animate-[scan_1.5s_infinite_0.75s]"></div>
-                </div>
+            
+            {/* Rotating rings around logo */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-full h-full absolute opacity-20">
+                <div className="absolute top-1/2 left-1/2 w-80 h-80 sm:w-96 sm:h-96 md:w-[28rem] md:h-[28rem] border border-accent/30 rounded-full transform -translate-x-1/2 -translate-y-1/2 animate-spin-slow"></div>
+                <div className="absolute top-1/2 left-1/2 w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 border border-[#FF3366]/30 rounded-full transform -translate-x-1/2 -translate-y-1/2 animate-spin" style={{animationDirection: 'reverse'}}></div>
               </div>
-            </div>
-          </div>
-          
-          {/* Robot mouth/analyzer - more reactive */}
-          <div className="robot-part absolute bottom-20 left-1/2 transform -translate-x-1/2 w-40 h-12 bg-[#0D0D0D] border border-[#FF3366] rounded-sm overflow-hidden shadow-[0_0_10px_rgba(255,51,102,0.3)]">
-            <div className="relative w-full h-full">
-              <div className="absolute inset-0 scanline-effect opacity-30"></div>
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full flex justify-between px-2">
-                  {[...Array(14)].map((_, i) => (
-                    <div key={i} className="mouth-bar w-1 bg-[#FF3366] opacity-80" style={{height: `${2 + Math.random() * 8}px`}}></div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Robot mechanical details - enhanced with glowing effects */}
-          <div className="robot-part absolute bottom-8 left-1/2 transform -translate-x-1/2 w-48 h-6 border border-accent flex shadow-[0_0_8px_rgba(0,255,178,0.3)]">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="flex-1 border-r border-accent relative overflow-hidden">
-                <div className={`h-full ${i % 2 === 0 ? 'bg-accent' : 'bg-[#FF3366]'} opacity-30`}></div>
-                <div className="absolute inset-0 scanline-effect"></div>
-              </div>
-            ))}
-          </div>
-          
-          {/* Antenna - enhanced with pulsing effect */}
-          <div className="robot-part absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-10 bg-accent shadow-[0_0_8px_rgba(0,255,178,0.5)]"></div>
-          <div className="robot-part absolute top-0 left-1/2 transform -translate-x-1/2 -mt-2 w-4 h-2 bg-[#FF3366] rounded-full animate-pulse shadow-[0_0_8px_rgba(255,51,102,0.5)]"></div>
-          
-          {/* Targeting reticle animations */}
-          <div className="robot-part absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-full h-full absolute opacity-30">
-              <div className="absolute top-1/2 left-0 right-0 h-px bg-accent transform -translate-y-1/2"></div>
-              <div className="absolute top-0 bottom-0 left-1/2 w-px bg-accent transform -translate-x-1/2"></div>
-              <div className="absolute top-1/2 left-1/2 w-32 h-32 border border-[#FF3366] rounded-full transform -translate-x-1/2 -translate-y-1/2 animate-ping-slow opacity-20"></div>
             </div>
           </div>
         </div>
         
-        {/* Terminal and status display - enhanced with scrolling text */}
-        <div className="flex flex-col w-full max-w-md">
+        {/* Terminal and status display - reduced size */}
+        <div className="flex flex-col w-96 md:w-[28rem] lg:w-[32rem]">
           {/* Loading text and progress */}
-          <div className="text-center relative z-10 glassmorphism py-4 px-8 rounded-md mb-4 border border-accent/20">
-            <h1 className="text-2xl font-bold mb-3 font-mono tracking-wider">
+          <div className="text-center relative z-10 glassmorphism py-4 px-6 md:px-8 rounded-md mb-6 border border-accent/20">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3 font-mono tracking-wider">
               <span className="text-accent">{loadingText}</span>
               <span className="animate-pulse ml-1">_</span>
             </h1>
             
             <div className="w-full mb-3 relative">
-              <div className="w-full h-2 bg-[#2D2D2D] rounded-full overflow-hidden">
+              <div className="w-full h-2 md:h-3 bg-[#2D2D2D] rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-gradient-to-r from-accent to-[#FF3366]" 
                   style={{ width: `${progress}%`, transition: 'width 0.5s ease-out' }}
@@ -314,7 +309,7 @@ const LoadingScreen: React.FC = () => {
           {/* Boot log terminal */}
           <div 
             ref={terminalRef}
-            className="robot-part glassmorphism bg-[#0A0A0A]/90 border border-accent/30 rounded-md p-4 h-48 overflow-y-auto text-xs font-mono relative"
+            className="robot-part glassmorphism bg-[#0A0A0A]/90 border border-accent/30 rounded-md p-4 md:p-5 h-52 md:h-60 lg:h-64 overflow-y-auto text-xs md:text-sm font-mono relative"
           >
             {/* Terminal header */}
             <div className="absolute top-0 left-0 right-0 h-6 bg-[#1A1A1A] flex items-center px-2">
@@ -338,10 +333,10 @@ const LoadingScreen: React.FC = () => {
       </div>
       
       {/* Rotating circular elements */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[500px] h-[500px] rounded-full border border-accent opacity-10 animate-spin-slow"></div>
-        <div className="w-[400px] h-[400px] rounded-full border border-[#FF3366] opacity-10 animate-spin" style={{animationDirection: 'reverse'}}></div>
-        <div className="w-[300px] h-[300px] rounded-full border border-accent opacity-5 animate-spin-slow" style={{animationDuration: '15s'}}></div>
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        <div className="w-[90vw] max-w-[500px] h-[90vw] max-h-[500px] rounded-full border border-accent opacity-10 animate-spin-slow"></div>
+        <div className="w-[75vw] max-w-[400px] h-[75vw] max-h-[400px] rounded-full border border-[#FF3366] opacity-10 animate-spin" style={{animationDirection: 'reverse'}}></div>
+        <div className="w-[60vw] max-w-[300px] h-[60vw] max-h-[300px] rounded-full border border-accent opacity-5 animate-spin-slow" style={{animationDuration: '15s'}}></div>
       </div>
     </div>
   );

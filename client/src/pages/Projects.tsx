@@ -1,54 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { gsap } from 'gsap';
-import { useEffect, useRef } from 'react';
+// import ElectricBorder from "../components/ui/ElectricBorder/ElectricBorder";
 
-// Real projects using provided project images
+
+// Use Vite base path so assets work in dev and prod
+const basePath = import.meta.env.BASE_URL;
 const projects = [
   {
     id: 1,
     title: "Portfolio Website",
     description: "A responsive portfolio website with clean design showcasing my skills and projects.",
-    image: "./assets/images/projects/01_Portfolio.png",
+    image: `${basePath}assets/images/projects/01_Portfolio.png`,
     category: "FRONTEND",
     categoryColor: "accent",
-    technologies: ["HTML", "CSS", "JavaScript", "Responsive Design"],
+    technologies: ["HTML", "CSS", "JavaScript", "Responsive Design", "React"],
     links: {
-      github: "https://github.com/Dinesh69069",
-      live: "#"
-    }
+      github: "https://github.com/Dinesh69069/DINESH-KUMAR-SAHOO",
+      live: "https://dinesh69069.github.io/DINESH-KUMAR-SAHOO/"
+    },
+    metaDescription: "A modern portfolio website built with React and TypeScript"
   },
   {
     id: 2,
     title: "Car Animation Project",
     description: "An interactive car animation with dynamic movement effects and user controls.",
-    image: "./assets/images/projects/02_Car_animation.png",
+    image: `${basePath}assets/images/projects/02_Car_animation.png`,
     category: "ANIMATION",
     categoryColor: "highlight",
     technologies: ["HTML", "CSS", "JavaScript", "Animation", "SVG"],
     links: {
-      github: "https://github.com/Dinesh69069",
-      live: "#"
+      github: "https://github.com/Dinesh69069/CAR-ANIMATION",
+      live: "https://dinesh69069.github.io/CAR-ANIMATION/"
     }
   },
   {
     id: 3,
     title: "Restaurant Menu",
     description: "A digital restaurant menu with elegant design and interactive category filtering.",
-    image: "./assets/images/projects/03_Resturant_menu.png",
+    image: `${basePath}assets/images/projects/03_Resturant_menu.png`,
     category: "FRONTEND",
     categoryColor: "accent",
     technologies: ["HTML", "CSS", "JavaScript", "Responsive Design"],
     links: {
-      github: "https://github.com/Dinesh69069",
-      live: "#"
+      github: "https://github.com/Dinesh69069/RESTURANT",
+      live: "https://dinesh69069.github.io/RESTURANT/"
     }
   },
   {
     id: 4,
     title: "Cyber Portfolio",
     description: "A cyberpunk-themed portfolio website with advanced animations and futuristic UI elements.",
-    image: "./assets/images/projects/04_Modifoed_Cyber_ Portfolio.png",
+    image: `${basePath}assets/images/projects/04_Modifoed_Cyber_ Portfolio.png`,
     category: "FRONTEND",
     categoryColor: "highlight",
     technologies: ["HTML", "CSS", "JavaScript", "GSAP", "SVG Animation"],
@@ -63,41 +65,43 @@ const Projects: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [filteredProjects, setFilteredProjects] = useState(projects);
   const projectsRef = useRef<HTMLDivElement>(null);
-  
+
   const filters = ["All", "Frontend", "Animation"];
-  
+
   useEffect(() => {
     if (activeFilter === "All") {
       setFilteredProjects(projects);
     } else {
       setFilteredProjects(
-        projects.filter(project => 
+        projects.filter(project =>
           project.category.toUpperCase().includes(activeFilter.toUpperCase())
         )
       );
     }
-    
+
     // Animate the cards when they change
     if (projectsRef.current) {
       const cards = projectsRef.current.querySelectorAll('.project-card');
-      
-      gsap.fromTo(
-        cards,
-        { 
-          opacity: 0, 
-          y: 20,
-          scale: 0.95
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          stagger: 0.1,
-          duration: 0.5,
-          ease: "back.out(1.2)",
-          clearProps: "all"
-        }
-      );
+      // Dynamically import gsap only when needed
+      import('gsap').then(({ gsap }) => {
+        gsap.fromTo(
+          cards,
+          { 
+            opacity: 0, 
+            y: 20,
+            scale: 0.95
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            stagger: 0.1,
+            duration: 0.5,
+            ease: "back.out(1.2)",
+            clearProps: "all"
+          }
+        );
+      });
     }
   }, [activeFilter]);
 
@@ -142,57 +146,82 @@ const Projects: React.FC = () => {
         {/* Projects Grid */}
         <div ref={projectsRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {filteredProjects.map((project) => (
-            <div 
-              key={project.id} 
-              className="project-card glassmorphism rounded-md overflow-hidden group transition-all duration-300 hover:shadow-neon relative"
-            >
-              <div className="relative overflow-hidden h-52">
-                {/* Display actual project image */}
-                <img 
-                  src={project.image} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover object-top"
-                  onError={(e) => {
-                    // Try alternative paths if the primary one fails
-                    (e.target as HTMLImageElement).onerror = null;
-                    (e.target as HTMLImageElement).src = `/Projects/${project.image.split('/').pop()}`;
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] to-transparent opacity-80 hover:opacity-40 transition-opacity duration-300"></div>
-                <div className={`absolute top-4 right-4 ${getCategoryColor(project.category)} text-[#1A1A1A] text-xs font-bold px-3 py-1 rounded-sm`}>
-                  {project.category}
-                </div>
-              </div>
-              
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-accent transition-colors">{project.title}</h3>
-                <p className="text-gray-400 text-sm mb-4">{project.description}</p>
-                
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.technologies.map((tech, index) => (
-                    <span key={index} className="text-xs bg-[#2D2D2D] px-2 py-1 rounded-sm font-mono">{tech}</span>
-                  ))}
+            // <ElectricBorder key={project.id}>
+              <div 
+                key={project.id}
+                className="project-card glassmorphism rounded-md overflow-hidden group transition-all duration-300 hover:shadow-neon relative"
+              >
+                <div className="relative overflow-hidden h-52">
+                  {/* Display actual project image */}
+                  <img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover object-top"
+                    width={416}
+                    height={208}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] to-transparent opacity-80 hover:opacity-40 transition-opacity duration-300"></div>
+                  <div className={`absolute top-4 right-4 ${getCategoryColor(project.category)} text-[#1A1A1A] text-xs font-bold px-3 py-1 rounded-sm`}>
+                    {project.category}
+                  </div>
                 </div>
                 
-                <div className="flex justify-between items-center">
-                  <a href="#" className="text-accent text-sm hover:underline flex items-center">
-                    <span>In Development</span>
-                    <i className="fas fa-code-branch ml-2 text-xs"></i>
-                  </a>
-                  <div className="flex gap-3">
-                    <a href={project.links.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors">
-                      <i className="fab fa-github"></i>
-                    </a>
-                    <a href={project.links.live} className="text-gray-400 hover:text-accent transition-colors">
-                      <i className="fas fa-external-link-alt"></i>
-                    </a>
+                <div className="p-6 relative">
+                  <h3 className="text-xl font-bold mb-2 group-hover:text-accent transition-colors">{project.title}</h3>
+                  <p className="text-gray-400 text-sm mb-4">{project.description}</p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.technologies.map((tech, index) => (
+                      <span key={index} className="text-xs bg-[#2D2D2D] px-2 py-1 rounded-sm font-mono">{tech}</span>
+                    ))}
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    {project.links.live === "#" ? (
+                      <span className="text-accent text-sm flex items-center" aria-label="Project in development">
+                        <span>In Development</span>
+                        <i className="fas fa-code-branch ml-2 text-xs"></i>
+                      </span>
+                    ) : (
+                      <span className="text-accent text-sm flex items-center">
+                        <i className="fas fa-check-circle mr-2"></i>
+                        <span>Completed</span>
+                      </span>
+                    )}
+                    <div className="flex gap-3">
+                      {project.links.github !== "#" && (
+                        <a 
+                          href={project.links.github} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-gray-400 hover:text-accent transition-colors inline-block p-2 hover:bg-[#2D2D2D] rounded cursor-pointer z-10" 
+                          aria-label={`View ${project.title} on GitHub`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <i className="fab fa-github text-xl"></i>
+                          <span className="sr-only">GitHub</span>
+                        </a>
+                      )}
+                      {project.links.live !== "#" && (
+                        <a 
+                          href={project.links.live} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-gray-400 hover:text-accent transition-colors inline-block p-2 hover:bg-[#2D2D2D] rounded cursor-pointer z-10" 
+                          aria-label={`View live demo of ${project.title}`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <i className="fas fa-external-link-alt text-xl"></i>
+                          <span className="sr-only">Live project</span>
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-              
-              {/* Project highlight border animation */}
-              <div className="absolute inset-0 border border-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </div>
+            // </ElectricBorder>
           ))}
         </div>
         

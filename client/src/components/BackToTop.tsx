@@ -27,12 +27,12 @@ const BackToTop = () => {
     <button
       id="backToTop"
       onClick={scrollToTop}
-      className={`fixed bottom-8 right-8 bg-accent text-[#1A1A1A] w-12 h-12 rounded-full flex items-center justify-center shadow-neon z-50 transition-all duration-300 ${
+      className={`fixed bottom-28 sm:bottom-32 right-6 sm:right-8 bg-accent text-[#1A1A1A] w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-neon z-50 transition-all duration-300 ${
         visible ? 'opacity-100 visible' : 'opacity-0 invisible'
       }`}
       aria-label="Back to top"
     >
-      <i className="fas fa-arrow-up"></i>
+      <i className="fas fa-arrow-up text-sm sm:text-base"></i>
     </button>
   );
 };

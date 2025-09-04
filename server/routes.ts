@@ -1,8 +1,22 @@
-import type { Express } from "express";
+import express, { type Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { fileURLToPath } from "url";
+import path from "path";
+import axios from "axios";
+import dotenv from "dotenv";
+import { handleChatMessage } from "./chat-handler";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config();
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  app.use(express.json());
+
+  // Chat endpoint (mounted on the provided app instance)
+  app.post("/api/chat", handleChatMessage);
   // Contact form endpoint
   app.post('/api/contact', async (req, res) => {
     try {
@@ -43,3 +57,4 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   return httpServer;
 }
+

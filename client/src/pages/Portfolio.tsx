@@ -28,7 +28,7 @@ const Portfolio: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden max-w-full">
       <Navbar />
       <Home />
       <About />
@@ -42,7 +42,13 @@ const Portfolio: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-8 md:mb-0">
               <a href="#home" className="text-2xl font-bold flex items-center space-x-2">
-                <span className="text-accent">∆</span>
+                <img 
+                  src={import.meta.env.BASE_URL + "transformers-logo-new.png"} 
+                  alt="Dinesh Logo" 
+                  className="w-8 h-8 object-cover rounded-full"
+                  width={32}
+                  height={32}
+                />
                 <span className="tracking-wider">DINESH</span>
               </a>
               <p className="text-gray-400 mt-2">Learning, coding, creating - one step at a time.</p>
@@ -51,17 +57,21 @@ const Portfolio: React.FC = () => {
             <div className="text-center md:text-right">
               <p className="text-gray-400">&copy; {new Date().getFullYear()} Dinesh Kumar Sahoo. All rights reserved.</p>
               <div className="flex space-x-6 mt-3 justify-center md:justify-end">
-                <a href="https://github.com/Dinesh69069" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors flex items-center">
-                  <GithubIcon className="w-5 h-5" />
+                <a href="https://github.com/Dinesh69069" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors flex items-center" aria-label="GitHub">
+                  <i className="fab fa-github"></i>
+                  <span className="sr-only">GitHub</span>
                 </a>
-                <a href="https://www.linkedin.com/in/dinesh-kumar-sahoo-dinesh-kumar-sahoo-183533330/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors flex items-center">
-                  <LinkedInIcon className="w-5 h-5" />
+                <a href="https://www.linkedin.com/in/dinesh-kumar-sahoo-dinesh-kumar-sahoo-183533330/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors flex items-center" aria-label="LinkedIn">
+                  <i className="fab fa-linkedin"></i>
+                  <span className="sr-only">LinkedIn</span>
                 </a>
-                <a href="https://www.hackerrank.com/profile/dineshkumarcs001" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors flex items-center">
-                  <HackerRankIcon className="w-5 h-5" />
+                <a href="https://www.hackerrank.com/profile/dineshkumarcs001" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors flex items-center" aria-label="HackerRank">
+                  <i className="fab fa-hackerrank"></i>
+                  <span className="sr-only">HackerRank</span>
                 </a>
-                <a href="https://wa.me/918144252742" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors flex items-center">
-                  <WhatsappIcon className="w-5 h-5" />
+                <a href="https://wa.me/918144252742" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-accent transition-colors flex items-center" aria-label="WhatsApp">
+                  <i className="fab fa-whatsapp"></i>
+                  <span className="sr-only">WhatsApp</span>
                 </a>
               </div>
             </div>
