@@ -160,6 +160,29 @@ const Achievements: React.FC = () => {
   const [selectedCert, setSelectedCert] = useState<typeof certifications[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  // Function to get different border colors for certificates
+  const getBorderColor = (cert: any): string => {
+    const colors = [
+      "#00D4FF", // Certificate 2 - Electric Blue / Sky Blue
+      "#FFB800", // Certificate 3 - Golden Orange / Amber
+      "#00E5FF", // Certificate 5 - Light Blue / Cyan Blue
+      "#00FF88", // Certificate 4 - Bright Green / Lime Green
+      "#FF6B35", // Certificate 6 - Orange Red / Coral Orange
+      "#00FFB2", // Certificate 1 - Mint Green / Cyan-Green
+      "#FFEA00", // Certificate 7 - Bright Yellow / Electric Yellow
+      "#4CAF50", // Certificate 8 - Material Green / Forest Green
+      "#FF9800", // Certificate 9 - Orange / Tangerine Orange
+      "#00FFFF", // Certificate 10 - Aqua / Pure Cyan
+      "#39FF14", // Certificate 11 - Neon Green / Radioactive Green
+      "#1E90FF", // Certificate 12 - Dodger Blue / Royal Blue
+      "#FFD700", // Certificate 13 - Gold / Pure Gold
+      "#00CED1", // Certificate 14 - Dark Turquoise / Teal
+    ];
+    
+    // Use certificate ID to get consistent color for each cert
+    return colors[cert.id % colors.length-1];
+  };
+  
   useEffect(() => {
     // Defer loading GSAP until the certificates section is visible.
     // This prevents shipping GSAP in the initial JS bundle unless the user scrolls to this section.
@@ -231,7 +254,8 @@ const Achievements: React.FC = () => {
   };
 
   return (
-    <section id="achievements" className="py-24 relative">
+    <>
+      <section id="achievements" className="py-24 relative">
       <div className="container mx-auto px-6">
         <SectionHeader 
           title="Certifications" 
@@ -246,7 +270,10 @@ const Achievements: React.FC = () => {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {certifications.map((cert) => (
-                <ElectricBorder key={cert.id}>
+                <ElectricBorder 
+                  key={cert.id} 
+                  color={getBorderColor(cert)}
+                >
                   <div className="glassmorphism rounded-md overflow-hidden group hover:shadow-neon transition-all duration-300">
                     <div className="relative h-48 overflow-hidden bg-[#2D2D2D] flex items-center justify-center">
                     <i className={`fa${cert.iconType ? 's' : 'b'} fa-${cert.icon} text-7xl text-accent opacity-30`}></i>
@@ -318,20 +345,21 @@ const Achievements: React.FC = () => {
           </div>
         </div>
       </div>
+    </section>
 
-      {/* Certificate Modal */}
-      {isModalOpen && selectedCert && (
-        <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
-          <div className="bg-[#1A1A1A] rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
-            <div className="flex justify-between items-center p-4 border-b border-gray-800">
-              <h3 className="text-xl font-bold text-white">{selectedCert.title}</h3>
-              <button 
-                onClick={closeCertificateModal}
-                className="text-gray-400 hover:text-white"
-              >
-                <i className="fas fa-times text-xl"></i>
-              </button>
-            </div>
+    {/* Certificate Modal - Moved outside section for proper centering */}
+    {isModalOpen && selectedCert && (
+      <div className="fixed inset-0 bg-black bg-opacity-80 z-[9999] flex items-center justify-center p-4" onClick={closeCertificateModal}>
+        <div className="bg-[#1A1A1A] rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="flex justify-between items-center p-4 border-b border-gray-800">
+            <h3 className="text-xl font-bold text-white">{selectedCert.title}</h3>
+            <button 
+              onClick={closeCertificateModal}
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              <i className="fas fa-times text-xl"></i>
+            </button>
+          </div>
             
             <div className="p-6 grid md:grid-cols-12 gap-6">
               <div className="md:col-span-5">
@@ -405,7 +433,7 @@ const Achievements: React.FC = () => {
           </div>
         </div>
       )}
-    </section>
+    </>
   );
 };
 

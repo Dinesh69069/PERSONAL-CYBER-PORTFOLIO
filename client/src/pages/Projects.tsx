@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SectionHeader from '../components/SectionHeader';
-// import ElectricBorder from "../components/ui/ElectricBorder/ElectricBorder";
+import AnimatedBorder from '../components/ui/AnimatedBorder/AnimatedBorder';
 
 
 // Use Vite base path so assets work in dev and prod
@@ -146,10 +146,9 @@ const Projects: React.FC = () => {
         {/* Projects Grid */}
         <div ref={projectsRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {filteredProjects.map((project) => (
-            // <ElectricBorder key={project.id}>
+            <AnimatedBorder key={project.id}>
               <div 
-                key={project.id}
-                className="project-card glassmorphism rounded-md overflow-hidden group transition-all duration-300 hover:shadow-neon relative"
+                className="project-card glassmorphism rounded-md overflow-hidden group transition-all duration-300 hover:shadow-neon relative bg-[#1c1f2b]"
               >
                 <div className="relative overflow-hidden h-52">
                   {/* Display actual project image */}
@@ -221,7 +220,7 @@ const Projects: React.FC = () => {
                   </div>
                 </div>
               </div>
-            // </ElectricBorder>
+            </AnimatedBorder>
           ))}
         </div>
         

@@ -1,0 +1,48 @@
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.animated-border-container {
+  position: relative;
+  border-radius: 10px;
+  background: transparent;
+  padding: 3px; /* This creates the border width */
+}
+
+.animated-border-container::after,
+.animated-border-container::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: conic-gradient(from var(--angle), transparent, #00FFB2);
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 10px;
+  animation: 3s spin linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.animated-border-container::before {
+  filter: blur(1rem);
+  opacity: 0.7;
+}
+
+@keyframes spin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Static content container */
+.animated-border-container > * {
+  position: relative;
+  z-index: 1;
+  border-radius: 7px; /* Slightly smaller to show the border */
+  overflow: hidden;
+  background: #1c1f2b; /* Ensure solid background */
+}

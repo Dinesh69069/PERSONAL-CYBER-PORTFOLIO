@@ -157,27 +157,31 @@ export default function Chatbot() {
                     alt="AI" 
                     className="w-6 h-6 object-cover rounded-full animate-pulse"
                   />
-                  <span className="text-[#00FFB2] font-bold tracking-widest animate-glow"> CYTRA AI</span>
+                  <span className="text-[#00FFB2] font-bold tracking-widest"> CYTRA AI</span>
                 </div>
                 <button 
                   onClick={() => setOpen(false)} 
-                  className="text-[#FF3366] hover:text-[#00FFB2] font-bold text-xl transition animate-glow hover:rotate-90 transform duration-300"
+                  className="text-[#FF3366] hover:text-[#00FFB2] font-bold text-xl transition hover:rotate-90 transform duration-300"
                 >
                   ✕
                 </button>
               </div>
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto space-y-2 custom-scrollbar">
+              <div className="flex-1 overflow-y-auto space-y-2 scrollbar-hide">
                 {messages.map((msg, i) => (
                   <div
                     key={i}
-                    className={`px-3 py-2 rounded-xl max-w-[80%] shadow-neon ${
-                      msg.from === "bot"
-                        ? "bg-[#101c1c]/80 text-[#00FFB2] self-start border-l-4 border-[#00FFB2]"
-                        : "bg-[#1A1A1A]/80 text-[#FF3366] self-end border-r-4 border-[#FF3366]"
-                    }`}
+                    className={`flex ${msg.from === "bot" ? "justify-start" : "justify-end"}`}
                   >
-                    {msg.text}
+                    <div
+                      className={`px-3 py-2 rounded-xl max-w-[80%] shadow-neon text-sm ${
+                        msg.from === "bot"
+                          ? `bg-[#101c1c]/80 text-[#00FFB2] border-l-4 border-[#00FFB2] ${i === 0 ? 'border-t-4' : ''}`
+                          : "bg-[#1A1A1A]/80 text-[#FF3366] border-r-4 border-[#FF3366]"
+                      }`}
+                    >
+                      {msg.text}
+                    </div>
                   </div>
                 ))}
                 <div ref={chatEndRef} />
