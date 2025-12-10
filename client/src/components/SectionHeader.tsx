@@ -7,7 +7,7 @@ interface SectionHeaderProps {
   description?: string;
 }
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({ 
+const SectionHeader: React.FC<SectionHeaderProps> = React.memo(({ 
   title, 
   highlightedWord, 
   description 
@@ -30,6 +30,6 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
       )}
     </div>
   );
-};
+});
 
 export default SectionHeader;

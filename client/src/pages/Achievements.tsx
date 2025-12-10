@@ -1,7 +1,7 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { useEffect, useRef, useState } from 'react';
-import ElectricBorder from "../components/ui/ElectricBorder/ElectricBorder";
+import { useState } from 'react';
+import { useSEO } from '../hooks/useSEO';
 
 // Real certificates from the provided files
 const basePath = import.meta.env.BASE_URL;
@@ -14,7 +14,8 @@ const certifications = [
     icon: "aws",
     description: "Foundational certification covering AWS Cloud concepts, services, and basic architectural principles. This certification validates my understanding of AWS Cloud fundamentals and core services.",
     skills: ["Cloud Computing", "AWS Services", "Cloud Architecture", "Security & Compliance"],
-    image: `${basePath}CERTIFICATES/AWS Cloud Practitioner Essentials.pdf`
+    image: `${basePath}CERTIFICATES/AWS Cloud Practitioner Essentials.pdf`,
+    preview: `${basePath}preview/AWS Cloud Practitioner Essentials.png`
   },
   {
     id: 2,
@@ -24,7 +25,8 @@ const certifications = [
     icon: "microsoft",
     description: "Advanced certification in business intelligence concepts, data visualization, and analytics. This comprehensive credential demonstrates my ability to transform raw data into actionable insights through effective visualization and analysis techniques. Covers advanced dashboard design, KPI tracking, and strategic data modeling for business decision-making.",
     skills: ["Data Visualization", "Dashboard Design", "KPI Tracking", "Data Modeling"],
-    image: `${basePath}CERTIFICATES/BI Certificate - Microsoft.pdf`
+    image: `${basePath}CERTIFICATES/BI Certificate - Microsoft.pdf`,
+    preview: `${basePath}preview/BI Certificate - Microsoft.png`
   },
   {
     id: 3,
@@ -35,7 +37,8 @@ const certifications = [
     iconType: "solid",
     description: "Comprehensive certification in data analytics fundamentals, including advanced data visualization and statistical analysis techniques. This extensive credential demonstrates my ability to analyze and interpret complex data effectively, utilizing statistical methods and business intelligence tools to drive data-driven decision making in professional environments.",
     skills: ["Data Visualization", "Statistical Methods","Data Analysis", "Business Intelligence"],
-    image: `${basePath}CERTIFICATES/Introduction to Data Analytics (Linked-In Learning).pdf`
+    image: `${basePath}CERTIFICATES/Introduction to Data Analytics (Linked-In Learning).pdf`,
+    preview: `${basePath}preview/Introduction to Data Analytics - Linkedin Learning.png`
   },
   {
     id: 4,
@@ -46,7 +49,8 @@ const certifications = [
     iconType: "solid",
     description: "Certification in cybersecurity fundamentals and best practices. This credential demonstrates my understanding of cybersecurity principles and security measures.",
     skills: ["Cybersecurity", "Security Best Practices", "Risk Assessment", "Security Protocols"],
-    image: `${basePath}CERTIFICATES/Cyber - Deloitte.pdf`
+    image: `${basePath}CERTIFICATES/Cyber - Deloitte.pdf`,
+    preview: `${basePath}preview/Cyber - Deloitte.png`
   },
   {
     id: 5,
@@ -57,7 +61,8 @@ const certifications = [
     iconType: "solid",
     description: "Advanced certification in technology consulting methodologies and digital transformation strategies. This comprehensive credential demonstrates my expertise in technology implementation, client advisory services, and enterprise solution architecture across diverse business environments.",
     skills: ["Technology Strategy", "Digital Transformation", "Client Advisory", "Solution Architecture"],
-    image: `${basePath}CERTIFICATES/Tecnology - Deloitte.pdf`
+    image: `${basePath}CERTIFICATES/Tecnology - Deloitte.pdf`,
+    preview: `${basePath}preview/Technology - Deloitte.png`
   },
   {
     id: 6,
@@ -68,7 +73,8 @@ const certifications = [
     iconType: "solid",
     description: "Certification in SQL queries, data manipulation, and database management. This credential demonstrates my ability to design, query, and manage relational databases effectively.",
     skills: ["SQL Queries", "Database Design", "Data Manipulation", "Performance Tuning"],
-    image: `${basePath}CERTIFICATES/SQL - SimpliLearn.pdf`
+    image: `${basePath}CERTIFICATES/SQL - SimpliLearn.pdf`,
+    preview: `${basePath}preview/SQL (Intermediate) - SimpliLearn.png`
   },
   {
     id: 7,
@@ -78,7 +84,8 @@ const certifications = [
     icon: "python",
     description: "Verified skills in Python programming fundamentals, including data structures and functions. This certification confirms my proficiency in writing efficient Python code and solving problems using Python's powerful libraries.",
     skills: ["Data Structures", "Functions", "Error Handling", "File I/O"],
-    image: `${basePath}CERTIFICATES/Python (Basic) - Hacker Rank.pdf`
+    image: `${basePath}CERTIFICATES/Python (Basic) - Hacker Rank.pdf`,
+    preview: `${basePath}preview/Python (Basics) - Hacker Rank.png`
   },
   {
     id: 8,
@@ -88,40 +95,55 @@ const certifications = [
     icon: "js",
     description: "Certification in JavaScript fundamentals including variables, functions, and DOM manipulation. This certification validates my ability to create interactive web applications using modern JavaScript.",
     skills: ["Variables & Data Types", "Functions", "DOM Manipulation", "Event Handling"],
-    image: `${basePath}CERTIFICATES/JavaScript (Basic) - Sololearn.pdf`
+    image: `${basePath}CERTIFICATES/JavaScript (Basic) - Sololearn.pdf`,
+    preview: `${basePath}preview/JavaScript (Basic)  - Sololearn.png`
   },
   {
     id: 9,
+    title: "JavaScript (Basic)",
+    organization: "HackerRank",
+    year: "2024",
+    icon: "js",
+    description: "Verified JavaScript programming skills covering core concepts, problem-solving, and algorithmic thinking. This HackerRank certification validates my proficiency in JavaScript fundamentals and coding challenges.",
+    skills: ["ES6+ Features", "Problem Solving", "Algorithms", "Code Optimization"],
+    image: `${basePath}CERTIFICATES/Javascript (Basic) - Hacker Rank.pdf`,
+    preview: `${basePath}preview/JavaScript (Basic) - Hacker Rank.png`
+  },
+  {
+    id: 10,
     title: "HTML Fundamentals",
     organization: "Sololearn",
     year: "2024",
     icon: "html5",
     description: "Comprehensive HTML certification covering modern web development standards. This certification validates my expertise in creating well-structured web content.",
     skills: ["HTML5", "Semantic Markup", "Forms", "Web Standards"],
-    image: `${basePath}CERTIFICATES/HTML - (SoloLearn).pdf`
+    image: `${basePath}CERTIFICATES/HTML - (SoloLearn).pdf`,
+    preview: `${basePath}preview/HTML (Intermediate) - Sololearn.png`
   },
   {
-    id: 10,
+    id: 11,
     title: "HTML Fundamentals",
-    organization: "Luminus Learning",
+    organization: "Lomus Learning",
     year: "2024",
     icon: "html5",
     description: "Certification in HTML fundamentals including semantic markup, forms, and accessibility. This certification validates my ability to create well-structured, accessible web pages using modern HTML5 standards.",
     skills: ["Semantic HTML", "Forms & Validation", "Accessibility", "Document Structure"],
-    image: `${basePath}CERTIFICATES/HTML - Lomus Learning.pdf`
+    image: `${basePath}CERTIFICATES/HTML - Lomus Learning.pdf`,
+    preview: `${basePath}preview/HTML (Basic) - Lomus Learning.png`
   },
   {
-    id: 11,
+    id: 12,
     title: "CSS (Basic)",
     organization: "HackerRank",
     year: "2024",
     icon: "css3-alt",
     description: "Comprehensive certification demonstrating verified skills in CSS styling, advanced selectors, and responsive design principles. This extensive credential validates my ability to create visually appealing, responsive layouts using modern CSS techniques including Flexbox, Grid, animations, and CSS variables for professional web development projects.",
     skills: ["Advanced Flexbox & Grid", "CSS Variables", "Media Queries", "Animations"],
-    image: `${basePath}CERTIFICATES/CSS (Basic) - Hacker Rank.pdf`
+    image: `${basePath}CERTIFICATES/CSS (Basic) - Hacker Rank.pdf`,
+    preview: `${basePath}preview/CSS (Basic) - Hacker Rank.png`
   },
   {
-    id: 12,
+    id: 13,
     title: "C Intermediate",
     organization: "Sololearn",
     year: "2024",
@@ -129,10 +151,11 @@ const certifications = [
     iconType: "solid",
     description: "Advanced C programming certification covering intermediate concepts and advanced programming techniques. This certification demonstrates my proficiency in complex C programming concepts.",
     skills: ["Advanced Pointers", "Memory Management", "Data Structures", "File I/O"],
-    image: `${basePath}CERTIFICATES/C Intermediate - Sololearn.pdf`
+    image: `${basePath}CERTIFICATES/C Intermediate - Sololearn.pdf`,
+    preview: `${basePath}preview/C (Intermediate) - Sololearn.png`
   },
   {
-    id: 13,
+    id: 14,
     title: "C Programming (Basic)",
     organization: "Simplilearn",
     year: "2024",
@@ -140,10 +163,11 @@ const certifications = [
     iconType: "solid",
     description: "Verification of foundational C programming skills including memory management and structures. This certification confirms my understanding of low-level programming concepts and efficient memory usage.",
     skills: ["Memory Management", "Pointers", "Structures", "File Operations"],
-    image: `${basePath}CERTIFICATES/C (Basic) - SimpliLearn.pdf`
+    image: `${basePath}CERTIFICATES/C (Basic) - SimpliLearn.pdf`,
+    preview: `${basePath}preview/C (Basic) - SimpliLearn.png`
   },
   {
-    id: 14,
+    id: 15,
     title: "SQL (Basic)",
     organization: "HackerRank",
     year: "2024",
@@ -151,98 +175,27 @@ const certifications = [
     iconType: "solid",
     description: "Basic SQL certification covering fundamental database querying and manipulation skills. This certification validates my ability to work with relational databases.",
     skills: ["SQL Queries", "Data Retrieval", "Table Operations", "Basic Joins"],
-    image: `${basePath}CERTIFICATES/SQL (Basic) - Hacker Rank.pdf`
+    image: `${basePath}CERTIFICATES/SQL (Basic) - Hacker Rank.pdf`,
+    preview: `${basePath}preview/SQL (Basic) - Hacker Rank.png`
+  },
+  {
+    id: 16,
+    title: "Getting Started with AI",
+    organization: "IBM",
+    year: "2024",
+    icon: "brain",
+    iconType: "solid",
+    description: "Introduction to Artificial Intelligence covering fundamental AI concepts, machine learning basics, and practical applications. This IBM certification demonstrates my understanding of AI technologies and their real-world implementations.",
+    skills: ["AI Fundamentals", "Machine Learning Basics", "AI Applications", "Data Science"],
+    image: `${basePath}CERTIFICATES/Getting Started with AI - IBM.pdf`,
+    preview: `${basePath}preview/Getting Started with AI - IBM.png`
   }
 ];
 
 const Achievements: React.FC = () => {
-  const certificatesRef = useRef<HTMLDivElement>(null);
+  useSEO('achievements');
   const [selectedCert, setSelectedCert] = useState<typeof certifications[0] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  // Function to get different border colors for certificates
-  const getBorderColor = (cert: any): string => {
-    const colors = [
-      "#00D4FF", // Certificate 2 - Electric Blue / Sky Blue
-      "#FFB800", // Certificate 3 - Golden Orange / Amber
-      "#00E5FF", // Certificate 5 - Light Blue / Cyan Blue
-      "#00FF88", // Certificate 4 - Bright Green / Lime Green
-      "#FF6B35", // Certificate 6 - Orange Red / Coral Orange
-      "#00FFB2", // Certificate 1 - Mint Green / Cyan-Green
-      "#FFEA00", // Certificate 7 - Bright Yellow / Electric Yellow
-      "#4CAF50", // Certificate 8 - Material Green / Forest Green
-      "#FF9800", // Certificate 9 - Orange / Tangerine Orange
-      "#00FFFF", // Certificate 10 - Aqua / Pure Cyan
-      "#39FF14", // Certificate 11 - Neon Green / Radioactive Green
-      "#1E90FF", // Certificate 12 - Dodger Blue / Royal Blue
-      "#FFD700", // Certificate 13 - Gold / Pure Gold
-      "#00CED1", // Certificate 14 - Dark Turquoise / Teal
-    ];
-    
-    // Use certificate ID to get consistent color for each cert
-    return colors[cert.id % colors.length-1];
-  };
-  
-  useEffect(() => {
-    // Defer loading GSAP until the certificates section is visible.
-    // This prevents shipping GSAP in the initial JS bundle unless the user scrolls to this section.
-    const node = certificatesRef.current;
-    if (!node) return;
-
-    let observer: IntersectionObserver | null = null;
-    let didImport = false;
-
-    const onIntersection: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !didImport) {
-          didImport = true;
-          // dynamically import GSAP and run the entrance animation
-          import('gsap').then((gsapModule) => {
-            const gsap = (gsapModule as any).gsap || (gsapModule as any).default || gsapModule;
-            const certificateElements = node.querySelectorAll('.glassmorphism');
-            if (certificateElements && certificateElements.length > 0) {
-              try {
-                gsap.fromTo(
-                  certificateElements,
-                  {
-                    opacity: 0,
-                    scale: 0.95,
-                  },
-                  {
-                    opacity: 1,
-                    scale: 1,
-                    stagger: 0.08,
-                    duration: 0.55,
-                    ease: 'back.out(1.4)'
-                  }
-                );
-              } catch (e) {
-                // If animation fails, silently continue — it's a non-critical enhancement.
-                // eslint-disable-next-line no-console
-                console.error('GSAP animation failed:', e);
-              }
-            }
-          }).catch((err) => {
-            // Ignore import failures; animations are optional
-            // eslint-disable-next-line no-console
-            console.error('Failed to load GSAP:', err);
-          });
-          // once imported we can disconnect the observer
-          if (observer) {
-            observer.disconnect();
-            observer = null;
-          }
-        }
-      });
-    };
-
-    observer = new IntersectionObserver(onIntersection, { root: null, rootMargin: '0px', threshold: 0.15 });
-    observer.observe(node);
-
-    return () => {
-      if (observer) observer.disconnect();
-    };
-  }, []);
 
   const openCertificateModal = (cert: typeof certifications[0]) => {
     setSelectedCert(cert);
@@ -265,16 +218,15 @@ const Achievements: React.FC = () => {
         
         <div className="max-w-6xl mx-auto">
           {/* Certifications */}
-          <div ref={certificatesRef} className="w-full">
+          <div className="w-full">
             <h3 className="text-2xl font-bold text-accent mb-8 text-center">&lt;Technical_Certifications /&gt;</h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {certifications.map((cert) => (
-                <ElectricBorder 
+                <div 
                   key={cert.id} 
-                  color={getBorderColor(cert)}
+                  className="glassmorphism rounded-md overflow-hidden group hover:shadow-neon transition-all duration-300 border border-gray-700 hover:border-accent"
                 >
-                  <div className="glassmorphism rounded-md overflow-hidden group hover:shadow-neon transition-all duration-300">
                     <div className="relative h-48 overflow-hidden bg-[#2D2D2D] flex items-center justify-center">
                     <i className={`fa${cert.iconType ? 's' : 'b'} fa-${cert.icon} text-7xl text-accent opacity-30`}></i>
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] to-transparent opacity-60"></div>
@@ -326,11 +278,9 @@ const Achievements: React.FC = () => {
                       </a>
                     </div>
                   </div>
-                  </div>
-                </ElectricBorder>
+                </div>
               ))}
             </div>
-            
             <div className="text-center mt-12">
               <div className="glassmorphism inline-block px-6 py-4 rounded-md mx-auto">
                 <p className="text-gray-300 mb-4">
@@ -395,37 +345,46 @@ const Achievements: React.FC = () => {
               
               <div className="md:col-span-7">
                 <div className="rounded-lg overflow-hidden bg-[#2D2D2D] h-full flex flex-col items-center justify-center p-4">
-                  {/* Certificate Preview Container */}
-                  <div className="w-full h-[400px] flex flex-col items-center justify-center">
-                    <div className="bg-[#1A1A1A] p-8 rounded-lg text-center w-full">
-                      <i className={`fa${selectedCert.iconType ? 's' : 'b'} fa-${selectedCert.icon} text-8xl text-accent mb-4`}></i>
-                      <h3 className="text-xl font-bold text-white mb-2">{selectedCert.title}</h3>
-                      <p className="text-gray-400 mb-4">Issued by {selectedCert.organization}</p>
-                      
-                      {/* View Options */}
-                      <div className="flex flex-col gap-3 mt-6">
-              <a 
-                href={selectedCert.image} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                          className="neo-button bg-accent text-white px-6 py-3 rounded-sm flex items-center justify-center hover:bg-opacity-90 transition-all"
-                          aria-label={selectedCert.title}
-                        >
-                          <i className="fas fa-external-link-alt mr-2"></i>
-                          <span>View Full Certificate</span>
-                        </a>
-                        
-                        <a 
-                          href={selectedCert.image}
-                          download
-                          className="neo-button border border-accent text-accent px-6 py-3 rounded-sm flex items-center justify-center hover:bg-accent hover:bg-opacity-10 transition-all"
-                          aria-label={selectedCert.title}
-              >
-                <i className="fas fa-download mr-2"></i>
-                <span>Download Certificate</span>
-              </a>
+                  {/* Certificate Preview Image */}
+                  <div className="w-full h-[250px] md:h-[300px] flex flex-col items-center justify-center overflow-hidden">
+                    {selectedCert.preview ? (
+                      <img 
+                        src={selectedCert.preview} 
+                        alt={`${selectedCert.title} Preview`}
+                        className="w-full h-full object-contain rounded-lg shadow-xl"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="bg-[#1A1A1A] p-8 rounded-lg text-center w-full">
+                        <i className={`fa${selectedCert.iconType ? 's' : 'b'} fa-${selectedCert.icon} text-8xl text-accent mb-4`}></i>
+                        <h3 className="text-xl font-bold text-white mb-2">{selectedCert.title}</h3>
+                        <p className="text-gray-400 mb-4">Issued by {selectedCert.organization}</p>
                       </div>
-                    </div>
+                    )}
+                  </div>
+                  
+                  {/* View Options */}
+                  <div className="flex flex-col sm:flex-row gap-2 mt-4 w-full">
+                    <a 
+                      href={selectedCert.image} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="neo-button bg-accent text-white px-4 py-2 text-sm rounded-sm flex items-center justify-center hover:bg-opacity-90 transition-all flex-1"
+                      aria-label={`View ${selectedCert.title}`}
+                    >
+                      <i className="fas fa-external-link-alt mr-2 text-xs"></i>
+                      <span>View Full Certificate</span>
+                    </a>
+                    
+                    <a 
+                      href={selectedCert.image}
+                      download
+                      className="neo-button border border-accent text-accent px-4 py-2 text-sm rounded-sm flex items-center justify-center hover:bg-accent hover:bg-opacity-10 transition-all flex-1"
+                      aria-label={`Download ${selectedCert.title}`}
+                    >
+                      <i className="fas fa-download mr-2 text-xs"></i>
+                      <span>Download Certificate</span>
+                    </a>
                   </div>
                 </div>
               </div>

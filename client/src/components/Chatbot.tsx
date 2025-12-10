@@ -20,9 +20,9 @@ export default function Chatbot() {
     setMessages((msgs) => [...msgs, { from: "user", text: input }]);
     setInput("");
     try {
-      console.log('Sending request to:', getApiUrl(API_CONFIG.ENDPOINTS.CHAT));
+      // API request to chat endpoint
       const res = await axios.post(getApiUrl(API_CONFIG.ENDPOINTS.CHAT), { message: input });
-      console.log('Response:', res.data);
+      // Successfully received response
       const data = res.data as { reply?: string; action?: string; target?: string };
       if (data.action === 'navigate' && data.target) {
         setMessages((msgs) => [...msgs, { from: "bot", text: data.reply || "Navigating..." }]);
@@ -152,11 +152,18 @@ export default function Chatbot() {
               {/* Header */}
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
-                  <img 
-                    src={import.meta.env.BASE_URL + "transformers-logo-new.png"} 
-                    alt="AI" 
-                    className="w-6 h-6 object-cover rounded-full animate-pulse"
-                  />
+                  <picture>
+                    <source srcSet={import.meta.env.BASE_URL + "transformers-logo-new.webp"} type="image/webp" />
+                    <img 
+                      src={import.meta.env.BASE_URL + "transformers-logo-new.png"} 
+                      alt="AI" 
+                      className="w-6 h-6 object-cover rounded-full animate-pulse"
+                      width={24}
+                      height={24}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
                   <span className="text-[#00FFB2] font-bold tracking-widest"> CYTRA AI</span>
                 </div>
                 <button 

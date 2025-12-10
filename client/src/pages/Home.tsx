@@ -1,8 +1,10 @@
 import React from 'react';
 import { useEffect, useRef } from 'react';
 import { HackerRankIcon, WhatsappIcon, GithubIcon, LinkedInIcon } from '../components/SocialIcons';
+import { useSEO } from '../hooks/useSEO';
 
 const Home: React.FC = () => {
+  useSEO('home');
   const titleRef = useRef<HTMLHeadingElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const mobileContainerRef = useRef<HTMLDivElement>(null);
@@ -25,7 +27,8 @@ const Home: React.FC = () => {
                 y: 30,
                 stagger: 0.2,
                 duration: 0.8,
-                ease: "power3.out"
+                ease: "power3.out",
+                force3D: true
               });
             }).catch(() => {
               // Fallback: show content immediately if animation fails
@@ -51,7 +54,8 @@ const Home: React.FC = () => {
             scale: 0.8,
             duration: 1,
             delay: 0.2,
-            ease: "back.out(1.7)"
+            ease: "back.out(1.7)",
+            force3D: true
             });
           }).catch(() => {
             // Fallback: ensure content is visible
@@ -69,7 +73,8 @@ const Home: React.FC = () => {
             y: 30,
             duration: 0.8,
             delay: 0.4,
-            ease: "power3.out"
+            ease: "power3.out",
+            force3D: true
             });
           }).catch(() => {
             // Fallback: ensure content is visible

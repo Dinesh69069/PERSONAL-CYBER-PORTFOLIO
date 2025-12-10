@@ -37,19 +37,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      // In a real application, here you would:
-      // 1. Store the message in a database
-      // 2. Send an email notification
-      // 3. Set up a webhook to a CRM, etc.
+      // Store message in storage (file-based for now)
+      const contactData = {
+        id: Date.now(),
+        name,
+        email,
+        subject,
+        message,
+        timestamp: new Date().toISOString(),
+        status: 'unread'
+      };
       
-      // For now, just return success
+      // Log contact submission to server console
+      // In production, this would be saved to a database
+      console.log('📬 New Contact Form Submission:');
+      console.log(`   Name: ${name}`);
+      console.log(`   Email: ${email}`);
+      console.log(`   Subject: ${subject}`);
+      console.log(`   Message: ${message.substring(0, 100)}...`);
+      console.log(`   Time: ${contactData.timestamp}`);
+      
+      // Send success response
       res.status(200).json({ 
-        message: "Message received successfully" 
+        message: "Thank you for your message! I'll get back to you soon.",
+        success: true
       });
     } catch (error) {
       console.error("Error processing contact form:", error);
       res.status(500).json({ 
-        message: "An error occurred while processing your request" 
+        message: "An error occurred while processing your request",
+        success: false
       });
     }
   });

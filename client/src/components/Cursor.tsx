@@ -5,6 +5,23 @@ const Cursor = () => {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
+    // Detect if device is mobile/tablet or has touch capability
+    const isMobileOrTouch = () => {
+      return (
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        window.matchMedia("(pointer: coarse)").matches
+      );
+    };
+
+    // Only enable custom cursor on desktop devices
+    if (isMobileOrTouch()) {
+      // Keep default cursor for mobile devices
+      document.body.style.cursor = "auto";
+      return;
+    }
+
     const cursor = document.createElement("div");
     cursor.classList.add("cursor");
     document.body.appendChild(cursor);
@@ -16,11 +33,13 @@ const Cursor = () => {
     const updateCursorPosition = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
       
-      // Update cursor and dot position directly for smoother movement
-      cursor.style.left = `${e.clientX}px`;
-      cursor.style.top = `${e.clientY}px`;
-      cursorDot.style.left = `${e.clientX}px`;
-      cursorDot.style.top = `${e.clientY}px`;
+      // Use requestAnimationFrame for smoother cursor movement
+      requestAnimationFrame(() => {
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+        cursorDot.style.left = `${e.clientX}px`;
+        cursorDot.style.top = `${e.clientY}px`;
+      });
     };
     
     const handleMouseEnter = () => setIsActive(true);
@@ -44,8 +63,12 @@ const Cursor = () => {
         element.removeEventListener("mouseleave", handleMouseLeave);
       });
       
-      document.body.removeChild(cursor);
-      document.body.removeChild(cursorDot);
+      if (document.body.contains(cursor)) {
+        document.body.removeChild(cursor);
+      }
+      if (document.body.contains(cursorDot)) {
+        document.body.removeChild(cursorDot);
+      }
     };
   }, []);
   

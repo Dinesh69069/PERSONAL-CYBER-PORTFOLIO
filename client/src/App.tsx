@@ -8,7 +8,7 @@ import Cursor from "./components/Cursor";
 const Portfolio = lazy(() => import("./pages/Portfolio"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 import ErrorBoundary from "./components/ErrorBoundary";
-const LoadingScreen = lazy(() => import("./components/LoadingScreen"));
+import LoadingScreen from "./components/LoadingScreen";
 const Chatbot = lazy(() => import("./components/Chatbot"));
 
 function Router() {
@@ -25,7 +25,20 @@ function App() {
 
   // Disable default cursor and set up scanline effect
   useEffect(() => {
-    document.body.style.cursor = "none";
+    // Detect if device is mobile/tablet or has touch capability
+    const isMobileOrTouch = () => {
+      return (
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        window.matchMedia("(pointer: coarse)").matches
+      );
+    };
+
+    // Only hide cursor on desktop devices
+    if (!isMobileOrTouch()) {
+      document.body.style.cursor = "none";
+    }
     
     // Add error tracking
     window.onerror = (message, source, lineno, colno, error) => {
@@ -54,7 +67,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Cursor />
-          <Suspense fallback={<LoadingScreen />}>
+          <Suspense fallback={<div className="loading-fallback">Loading...</div>}>
             {isLoading ? (
               <LoadingScreen setIsLoading={setIsLoading} />
             ) : (

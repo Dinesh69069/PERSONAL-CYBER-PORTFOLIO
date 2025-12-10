@@ -22,7 +22,7 @@
   left: 0;
   z-index: -1;
   border-radius: 10px;
-  animation: 3s spin linear infinite;
+  animation: 6s spin linear infinite;
   will-change: transform;
   transform: translateZ(0);
 }

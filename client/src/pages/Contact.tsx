@@ -4,8 +4,10 @@ import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import { HackerRankIcon, WhatsappIcon, GithubIcon, LinkedInIcon } from '../components/SocialIcons';
 import { getApiUrl, API_CONFIG } from '../lib/api-config';
+import { useSEO } from '../hooks/useSEO';
 
 const Contact: React.FC = () => {
+  useSEO('contact');
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',

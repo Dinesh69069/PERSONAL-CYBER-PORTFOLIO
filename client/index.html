@@ -7,21 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DINESH KUMAR SAHOO - TECH </title>
     
-    <!-- Google Analytics 4 (Replace YOUR_GA4_ID with your actual tracking ID) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA4_ID"></script>
+    <!-- Google Analytics 4 -->
+    <!-- To enable: Create GA4 property at analytics.google.com and replace G-XXXXXXXXXX below -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'YOUR_GA4_ID');
-    </script>
+      gtag('config', 'G-XXXXXXXXXX');
+    </script> -->
     
     <!-- Preconnect to external domains for faster font loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Optimized font loading with font-display:swap -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Optimized font loading with font-display:swap and subset -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap&subset=latin" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap&subset=latin" rel="stylesheet"></noscript>
+    
+    <!-- Preload critical LCP image (transformers logo) -->
+    <link rel="preload" as="image" href="/transformers-logo-new.webp" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="image" href="/transformers-logo-new.png" fetchpriority="high">
     
     <!-- Preload critical hero images for faster LCP -->
     <link rel="preload" as="image" href="/cyber-profile-rect.webp" type="image/webp">

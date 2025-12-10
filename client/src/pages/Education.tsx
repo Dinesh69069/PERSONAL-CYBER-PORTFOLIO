@@ -1,8 +1,10 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { useEffect, useRef } from 'react';
+import { useSEO } from '../hooks/useSEO';
 
 const Education: React.FC = () => {
+  useSEO('education');
   const timelineRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {

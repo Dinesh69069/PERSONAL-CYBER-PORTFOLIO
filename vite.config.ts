@@ -1,8 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 import compression from 'vite-plugin-compression';
 
 const isProd = process.env.NODE_ENV === "production";
@@ -10,8 +8,6 @@ export default defineConfig({
   base: "/PERSONAL-CYBER-PORTFOLIO/",
   plugins: [
     react(),
-    ...(process.env.NODE_ENV !== 'production' ? [runtimeErrorOverlay()] : []),
-    themePlugin(),
     // keep gzip for broad compatibility
     compression({
       algorithm: 'gzip',
@@ -26,9 +22,6 @@ export default defineConfig({
       },
       threshold: 1024
     }),
-    ...(process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined
-      ? [await import("@replit/vite-plugin-cartographer").then((m) => m.cartographer())]
-      : []),
   ],
   optimizeDeps: {
     include: ['react', 'react-dom'],
@@ -63,13 +56,16 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'ui-vendor': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-alert-dialog',
             '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-toast',
+            '@radix-ui/react-tooltip',
+            '@radix-ui/react-avatar',
+            '@radix-ui/react-label',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-progress',
             'framer-motion'
           ],
-          'utils': ['axios', 'zod', 'date-fns'],
+          'utils': ['axios', 'zod'],
           'animations': ['gsap']
         },
         assetFileNames: (assetInfo) => {

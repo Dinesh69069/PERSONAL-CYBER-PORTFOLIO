@@ -53,12 +53,19 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ setIsLoading }) => {
     
     // Initial glitch/boot effect
     import('gsap').then(({ gsap }) => {
+      // Optimize GSAP for performance - reduce forced reflows
+      gsap.config({ 
+        force3D: true,
+        nullTargetWarn: false
+      });
+      
       mainTl = gsap.timeline();
       mainTl.to('.loading-screen', {
         opacity: 0.5,
         duration: 0.05,
         repeat: 8,
-        yoyo: true
+        yoyo: true,
+        force3D: true
       });
       
       // Add boot log lines
@@ -72,52 +79,67 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ setIsLoading }) => {
         }
       };
       
-      // Add initial boot lines faster
-      for (let i = 0; i < 3; i++) {
-        mainTl.call(() => addBootLine(i), [], i * 0.2);
-      }
-      
       // Animate the robotic parts with cooler entrances
       mainTl.fromTo('.robot-head', 
         { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.8, ease: "elastic.out(1.2, 0.5)" }
+        { scale: 1, opacity: 1, duration: 0.8, ease: "elastic.out(1.2, 0.5)", force3D: true }
       );
       
       mainTl.fromTo('.robot-part', 
         { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.08, duration: 0.6, ease: "power2.out" },
+        { y: 0, opacity: 1, stagger: 0.08, duration: 0.6, ease: "power2.out", force3D: true },
         "-=0.5"
       );
       
-      // Continue adding boot lines
-      for (let i = 3; i < bootLogSequence.length; i++) {
-        mainTl.call(() => addBootLine(i), [], 1.5 + (i - 3) * 0.15);
-      }
+      // Show HUD corner elements early - right after robot parts (at ~1.5s)
+      mainTl.fromTo('.hud-element',
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, stagger: 0.15, duration: 0.6, force3D: true },
+        1.5
+      );
       
-      // Animate the progress bar and text changes with slower progression
+      // Synchronize boot lines with progress bar
+      // Calculate timing so boot lines appear proportionally with progress
+      const totalBootLines = bootLogSequence.length;
+      const progressSteps = textSequence.length;
+      const linesPerStep = totalBootLines / progressSteps;
+      
+      // Animate the progress bar and text changes with synchronized boot lines
       textSequence.forEach((text, index) => {
-        // Update text and progress in sequence with longer delays
+        const timing = 2 + index * 1.5;
+        
+        // Update text and progress in sequence
         mainTl.call(() => {
           setLoadingText(text);
           // Gradual progress that reaches 100% on the last step
           const progressValue = index === textSequence.length - 1 ? 100 : Math.floor((index + 1) / textSequence.length * 85);
           setProgress(progressValue);
-        }, [], 2 + index * 1.5); // Increased timing for slower progression
+          
+          // Add boot lines proportionally to progress
+          const linesToShow = Math.floor((index + 1) * linesPerStep);
+          for (let i = Math.floor(index * linesPerStep); i < linesToShow && i < totalBootLines; i++) {
+            setTimeout(() => addBootLine(i), (i - Math.floor(index * linesPerStep)) * 100);
+          }
+        }, [], timing);
         
         // Add scanning line effect
         if (index < textSequence.length - 1) {
           mainTl.fromTo('.scan-line',
             { top: '0%', opacity: 0.7 },
-            { top: '100%', opacity: 0, duration: 1.2, ease: "power1.inOut" },
-            2 + index * 1.5 + 0.2
+            { top: '100%', opacity: 0, duration: 1.2, ease: "power1.inOut", force3D: true },
+            timing + 0.2
           );
         }
       });
       
-      // Final progress animation to 100%
+      // Final progress animation to 100% with last boot line
       mainTl.call(() => {
         setLoadingText("SYSTEMS FULLY OPERATIONAL");
         setProgress(100);
+        // Show the final boot line at 100% completion
+        if (bootLines.length < totalBootLines) {
+          addBootLine(totalBootLines - 1);
+        }
       }, [], 2 + (textSequence.length - 1) * 1.5 + 1);
       
       // Hold at 100% for a moment before transitioning
@@ -141,19 +163,13 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ setIsLoading }) => {
         duration: 0.2,
       }, 4);
       
-      // Final HUD elements - adjusted timing
-      mainTl.fromTo('.hud-element',
-        { opacity: 0, scale: 0.8 },
-        { opacity: 1, scale: 1, stagger: 0.15, duration: 0.6 },
-        6
-      );
-      
       // Final reveal animation with proper timing
       const finalTransitionTime = 2 + (textSequence.length - 1) * 1.5 + 4; // After all content is loaded
       mainTl.to('.loading-screen', {
         opacity: 0,
         duration: 1.0,
         delay: 1.5,
+        force3D: true,
         onComplete: () => {
           // Ensure this only runs once
           if (loading) {
@@ -238,14 +254,22 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ setIsLoading }) => {
             
             {/* Logo container with glassmorphism effect */}
             <div className="relative glassmorphism p-10 md:p-14 lg:p-16 rounded-2xl border border-accent/30 shadow-[0_0_30px_rgba(0,255,178,0.3)]">
-              <img 
-                src={import.meta.env.BASE_URL + "transformers-logo-new.png"} 
-                alt="Transformers Logo" 
-                className="w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 lg:w-72 lg:h-72 object-contain drop-shadow-[0_0_20px_rgba(0,255,178,0.5)] animate-float rounded-[10px]"
-                style={{
-                  filter: 'drop-shadow(0 0 10px rgba(0,255,178,0.8)) drop-shadow(0 0 20px rgba(0,255,178,0.4))'
-                }}
-              />
+              <picture>
+                <source srcSet={import.meta.env.BASE_URL + "transformers-logo-new.webp"} type="image/webp" />
+                <img 
+                  src={import.meta.env.BASE_URL + "transformers-logo-new.png"} 
+                  alt="Transformers Logo" 
+                  className="w-40 h-40 sm:w-52 sm:h-52 md:w-64 md:h-64 lg:w-72 lg:h-72 object-contain drop-shadow-[0_0_20px_rgba(0,255,178,0.5)] animate-float rounded-[10px]"
+                  width="324"
+                  height="324"
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="async"
+                  style={{
+                    filter: 'drop-shadow(0 0 10px rgba(0,255,178,0.8)) drop-shadow(0 0 20px rgba(0,255,178,0.4))'
+                  }}
+                />
+              </picture>
               
               {/* Scanning lines effect */}
               <div className="absolute inset-0 overflow-hidden rounded-2xl">

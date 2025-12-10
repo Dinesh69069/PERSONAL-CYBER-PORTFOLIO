@@ -1,43 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { useEffect, useRef } from 'react';
+import { useSEO } from '../hooks/useSEO';
+
+interface Skill {
+  name: string;
+  level: number;
+  category: string;
+  icon: string;
+}
 
 const About: React.FC = () => {
+  useSEO('about');
+  const [isVisible, setIsVisible] = useState(false);
   const skillsRef = useRef<HTMLDivElement>(null);
-  
+
+  const skills: Skill[] = [
+    // Web Development
+    { name: "HTML", level: 100, category: "Web Development", icon: "fa-brands fa-html5" },
+    { name: "CSS", level: 60, category: "Web Development", icon: "fa-brands fa-css3-alt" },
+    { name: "JavaScript", level: 40, category: "Web Development", icon: "fa-brands fa-js" },
+    
+    // Programming
+    { name: "C", level: 80, category: "Programming", icon: "fa-solid fa-c" },
+    { name: "Python", level: 75, category: "Programming", icon: "fa-brands fa-python" },
+    { name: "SQL", level: 85, category: "Programming", icon: "fa-solid fa-database" }
+  ];
+
+  const categories = Array.from(new Set(skills.map(skill => skill.category)));
+
   useEffect(() => {
-    // Animate skill bars when they come into view
-    const skills = [
-      { name: "HTML", percentage: 100 },
-      { name: "CSS", percentage: 60 },
-      { name: "JavaScript", percentage: 40 },
-      { name: "C", percentage: 80 },
-      { name: "Python", percentage: 75 },
-      { name: "SQL", percentage: 85 }
-    ];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
     if (skillsRef.current) {
-      const progressBars = skillsRef.current.querySelectorAll('.progress-fill');
-      
-      import('gsap').then(({ gsap }) => {
-        progressBars.forEach((bar, index) => {
-          gsap.fromTo(
-            bar,
-            { width: '0%' },
-            {
-              width: `${skills[index].percentage}%`,
-              duration: 1.5,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: bar,
-                start: "top 90%",
-                toggleActions: "play none none none"
-              }
-            }
-          );
-        });
-      });
+      observer.observe(skillsRef.current);
     }
+
+    return () => {
+      if (skillsRef.current) {
+        observer.unobserve(skillsRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -94,82 +106,63 @@ const About: React.FC = () => {
           
           <div className="w-full lg:w-1/2">
             <div className="glassmorphism rounded-md p-6">
-              <h3 className="text-2xl font-bold text-accent mb-6">&lt;Skills /&gt;</h3>
+              <h3 className="text-2xl font-bold text-accent mb-8">&lt;Technical Proficiencies /&gt;</h3>
               
-              <div ref={skillsRef} className="space-y-6">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-mono">HTML</span>
-                    <span className="text-accent">100%</span>
+              <div ref={skillsRef} className="space-y-8">
+                {categories.map((category, catIndex) => (
+                  <div key={category}>
+                    {/* Category Header */}
+                    <div className="flex items-center mb-4">
+                      <div className="h-px flex-1 bg-gradient-to-r from-accent/50 to-transparent"></div>
+                      <h4 className="text-sm font-bold text-accent mx-4 tracking-wider">
+                        {category.toUpperCase()}
+                      </h4>
+                      <div className="h-px flex-1 bg-gradient-to-l from-accent/50 to-transparent"></div>
+                    </div>
+
+                    {/* Skills in this category */}
+                    <div className="space-y-4">
+                      {skills
+                        .filter(skill => skill.category === category)
+                        .map((skill, index) => {
+                          return (
+                            <div
+                              key={skill.name}
+                              className="group"
+                              style={{
+                                animation: isVisible ? `fadeInUp 0.6s ease-out ${catIndex * 0.2 + index * 0.1}s both` : 'none'
+                              }}
+                            >
+                              <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center gap-2">
+                                  <i className={`${skill.icon} text-accent text-sm`}></i>
+                                  <span className="font-mono text-sm">{skill.name}</span>
+                                </div>
+                                <span className="text-accent font-bold text-sm">{skill.level}%</span>
+                              </div>
+                              
+                              <div className="h-2 bg-gray-800/50 rounded-full overflow-hidden relative group-hover:shadow-lg group-hover:shadow-accent/20 transition-all duration-300">
+                                {/* Animated background shimmer */}
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer"></div>
+                                
+                                {/* Progress bar with gradient - cyan to gold */}
+                                <div
+                                  className="h-full bg-gradient-to-r from-[#00FFB2] to-[#FFD700] rounded-full relative overflow-hidden transition-all duration-1000 ease-out"
+                                  style={{
+                                    width: isVisible ? `${skill.level}%` : '0%',
+                                    transitionDelay: `${catIndex * 0.2 + index * 0.1}s`
+                                  }}
+                                >
+                                  {/* Sliding shine effect */}
+                                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-slide"></div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
                   </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill bg-accent" data-width="100%"></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-mono">CSS</span>
-                    <span className="text-accent">60%</span>
-                  </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill bg-accent" data-width="60%"></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-mono">JavaScript</span>
-                    <span className="text-accent">40%</span>
-                  </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill bg-accent" data-width="40%"></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-mono">C</span>
-                    <span className="text-accent">80%</span>
-                  </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill bg-accent" data-width="80%"></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-mono">Python</span>
-                    <span className="text-accent">75%</span>
-                  </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill bg-accent" data-width="75%"></div>
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-mono">SQL</span>
-                    <span className="text-accent">85%</span>
-                  </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill bg-accent" data-width="85%"></div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="mt-8">
-                <h4 className="font-medium mb-4 text-lg">Tech Stack</h4>
-                <div className="flex flex-wrap gap-3">
-                  <span className="bg-[#2D2D2D] px-3 py-1 rounded-sm text-sm font-mono">HTML</span>
-                  <span className="bg-[#2D2D2D] px-3 py-1 rounded-sm text-sm font-mono">CSS</span>
-                  <span className="bg-[#2D2D2D] px-3 py-1 rounded-sm text-sm font-mono">JavaScript</span>
-                  <span className="bg-[#2D2D2D] px-3 py-1 rounded-sm text-sm font-mono">C</span>
-                  <span className="bg-[#2D2D2D] px-3 py-1 rounded-sm text-sm font-mono">Python</span>
-                  <span className="bg-[#2D2D2D] px-3 py-1 rounded-sm text-sm font-mono">SQL</span>
-                  <span className="bg-[#2D2D2D] px-3 py-1 rounded-sm text-sm font-mono">Git</span>
-                  <span className="bg-[#2D2D2D] px-3 py-1 rounded-sm text-sm font-mono">Tailwind CSS</span>
-                </div>
+                ))}
               </div>
             </div>
           </div>

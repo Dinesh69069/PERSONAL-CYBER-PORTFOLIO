@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import AnimatedBorder from '../components/ui/AnimatedBorder/AnimatedBorder';
+import { useSEO } from '../hooks/useSEO';
 
 
 // Use Vite base path so assets work in dev and prod
@@ -62,6 +63,7 @@ const projects = [
 ];
 
 const Projects: React.FC = () => {
+  useSEO('projects');
   const [activeFilter, setActiveFilter] = useState("All");
   const [filteredProjects, setFilteredProjects] = useState(projects);
   const projectsRef = useRef<HTMLDivElement>(null);
@@ -98,6 +100,7 @@ const Projects: React.FC = () => {
             stagger: 0.1,
             duration: 0.5,
             ease: "back.out(1.2)",
+            force3D: true,
             clearProps: "all"
           }
         );

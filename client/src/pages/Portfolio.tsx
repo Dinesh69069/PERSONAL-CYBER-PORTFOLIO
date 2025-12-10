@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import BackToTop from '../components/BackToTop';
+import ScrollProgress from '../components/ScrollProgress';
 import Home from './Home';
 import About from './About';
 import Education from './Education';
@@ -29,6 +30,7 @@ const Portfolio: React.FC = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden max-w-full">
+      <ScrollProgress />
       <Navbar />
       <Home />
       <About />
@@ -42,13 +44,18 @@ const Portfolio: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-8 md:mb-0">
               <a href="#home" className="text-2xl font-bold flex items-center space-x-2">
-                <img 
-                  src={import.meta.env.BASE_URL + "transformers-logo-new.png"} 
-                  alt="Dinesh Logo" 
-                  className="w-8 h-8 object-cover rounded-full"
-                  width={32}
-                  height={32}
-                />
+                <picture>
+                  <source srcSet={import.meta.env.BASE_URL + "transformers-logo-new.webp"} type="image/webp" />
+                  <img 
+                    src={import.meta.env.BASE_URL + "transformers-logo-new.png"} 
+                    alt="Dinesh Logo" 
+                    className="w-8 h-8 object-cover rounded-full"
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 <span className="tracking-wider">DINESH</span>
               </a>
               <p className="text-gray-400 mt-2">Learning, coding, creating - one step at a time.</p>
