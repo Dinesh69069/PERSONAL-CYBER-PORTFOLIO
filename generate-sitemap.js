@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
-const SITE_URL = 'https://dinesh69069.github.io/PERSONAL-CYBER-PORTFOLIO';
+const SITE_URL = 'https://dineshkumarcs.online';
 const PAGES = [
   { path: '/', priority: '1.0', changefreq: 'weekly' },
   { path: '/#about', priority: '0.9', changefreq: 'monthly' },

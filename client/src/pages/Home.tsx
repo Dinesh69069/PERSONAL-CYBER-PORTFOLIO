@@ -118,7 +118,7 @@ const Home: React.FC = () => {
                   {/* Cyberpunk profile photo with responsive images and WebP support */}
                   <picture>
                     <source 
-                      srcSet={import.meta.env.BASE_URL + "converted_image.webp"} 
+                      srcSet={import.meta.env.BASE_URL + "cyber-profile-rect.webp"} 
                       type="image/webp"
                     />
                     <img 
@@ -136,7 +136,7 @@ const Home: React.FC = () => {
                       }}
                       onError={(e) => {
                         (e.target as HTMLImageElement).onerror = null;
-                        (e.target as HTMLImageElement).src = import.meta.env.BASE_URL + "cyber-profile.jpg";
+                        // Fallback already loaded, no need for secondary fallback
                       }}
                     />
                   </picture>
@@ -237,7 +237,7 @@ const Home: React.FC = () => {
                     }}
                     onError={(e) => {
                       (e.target as HTMLImageElement).onerror = null;
-                      (e.target as HTMLImageElement).src = import.meta.env.BASE_URL + "cyber-profile.jpg";
+                      // Fallback already loaded, no need for secondary fallback
                     }}
                   />
                 </picture>

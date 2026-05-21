@@ -14,7 +14,7 @@ const Chatbot = lazy(() => import("./components/Chatbot"));
 function Router() {
   return (
     <Switch>
-      <Route path="/PERSONAL-CYBER-PORTFOLIO/" component={Portfolio} />
+      <Route path="/" component={Portfolio} />
       <Route component={NotFound} />
     </Switch>
   );

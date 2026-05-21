@@ -5,7 +5,7 @@ import compression from 'vite-plugin-compression';
 
 const isProd = process.env.NODE_ENV === "production";
 export default defineConfig({
-  base: "/PERSONAL-CYBER-PORTFOLIO/",
+  base: "./",
   plugins: [
     react(),
     // keep gzip for broad compatibility

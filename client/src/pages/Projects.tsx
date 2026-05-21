@@ -59,6 +59,34 @@ const projects = [
       github: "https://github.com/Dinesh69069",
       live: "#"
     }
+  },
+  {
+    id: 5,
+    title: "Our District Angul",
+    description: "A comprehensive website showcasing the culture, heritage, and development of Angul district with interactive features.",
+    image: `${basePath}assets/images/projects/05_Our_Angul_District.png`,
+    category: "FRONTEND",
+    categoryColor: "accent",
+    technologies: ["HTML", "CSS", "JavaScript", "Responsive Design", "Bootstrap"],
+    links: {
+      github: "https://github.com/Dinesh69069/OUR-DISTRICT-ANGUL",
+      live: "https://dinesh69069.github.io/OUR-DISTRICT-ANGUL/"
+    },
+    metaDescription: "A district information website with modern design and interactive elements"
+  },
+  {
+    id: 6,
+    title: "Learn Sphere",
+    description: "An innovative e-learning platform with interactive courses, progress tracking, and modern UI/UX design.",
+    image: `${basePath}assets/images/projects/06_Learn_Sphere.png`,
+    category: "FULLSTACK",
+    categoryColor: "highlight",
+    technologies: ["React", "TypeScript", "Node.js", "Vercel", "Tailwind CSS"],
+    links: {
+      github: "https://github.com/Ashutosh054-cs/Learn-sphere",
+      live: "https://learn-sphere-sigma.vercel.app/"
+    },
+    metaDescription: "A modern e-learning platform built with React and deployed on Vercel"
   }
 ];
 
